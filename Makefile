@@ -48,11 +48,17 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = main.cpp \
-		messagingcontrols.cpp moc_messagingcontrols.cpp
-OBJECTS       = main.o \
-		messagingcontrols.o \
-		moc_messagingcontrols.o
+SOURCES       = Decryption.cpp \
+		Encryption.cpp \
+		GenerateKeys.cpp \
+		Main.cpp \
+		MessagingControls.cpp moc_MessagingControls.cpp
+OBJECTS       = Decryption.o \
+		Encryption.o \
+		GenerateKeys.o \
+		Main.o \
+		MessagingControls.o \
+		moc_MessagingControls.o
 DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/common/unix.conf \
 		/usr/lib/qt/mkspecs/common/linux.conf \
@@ -158,8 +164,14 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/exceptions.prf \
 		/usr/lib/qt/mkspecs/features/yacc.prf \
 		/usr/lib/qt/mkspecs/features/lex.prf \
-		EncryptedMessaging.pro messagingcontrols.h main.cpp \
-		messagingcontrols.cpp
+		EncryptedMessaging.pro Decryption.h \
+		Encryption.h \
+		GenerateKeys.h \
+		MessagingControls.h Decryption.cpp \
+		Encryption.cpp \
+		GenerateKeys.cpp \
+		Main.cpp \
+		MessagingControls.cpp
 QMAKE_TARGET  = EncryptedMessaging
 DESTDIR       = 
 TARGET        = EncryptedMessaging
@@ -405,8 +417,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents messagingcontrols.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp messagingcontrols.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents Decryption.h Encryption.h GenerateKeys.h MessagingControls.h $(DISTDIR)/
+	$(COPY_FILE) --parents Decryption.cpp Encryption.cpp GenerateKeys.cpp Main.cpp MessagingControls.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -438,13 +450,13 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/qt/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -march=x86-64 -mtune=generic -O2 -pipe -fstack-protector-strong -Wall -W -dM -E -o moc_predefs.h /usr/lib/qt/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_messagingcontrols.cpp
+compiler_moc_header_make_all: moc_MessagingControls.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_messagingcontrols.cpp
-moc_messagingcontrols.cpp: messagingcontrols.h \
+	-$(DEL_FILE) moc_MessagingControls.cpp
+moc_MessagingControls.cpp: MessagingControls.h \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/monde/Programming/Qt/EncryptedMessaging -I/home/monde/Programming/Qt/EncryptedMessaging -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/6.3.1 -I/usr/include/c++/6.3.1/x86_64-pc-linux-gnu -I/usr/include/c++/6.3.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include-fixed -I/usr/include messagingcontrols.h -o moc_messagingcontrols.cpp
+	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/monde/Programming/Qt/EncryptedMessaging -I/home/monde/Programming/Qt/EncryptedMessaging -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/6.3.1 -I/usr/include/c++/6.3.1/x86_64-pc-linux-gnu -I/usr/include/c++/6.3.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include-fixed -I/usr/include MessagingControls.h -o moc_MessagingControls.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -460,14 +472,25 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 
 ####### Compile
 
-main.o: main.cpp messagingcontrols.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
+Decryption.o: Decryption.cpp Decryption.h \
+		GenerateKeys.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Decryption.o Decryption.cpp
 
-messagingcontrols.o: messagingcontrols.cpp messagingcontrols.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o messagingcontrols.o messagingcontrols.cpp
+Encryption.o: Encryption.cpp Encryption.h \
+		GenerateKeys.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Encryption.o Encryption.cpp
 
-moc_messagingcontrols.o: moc_messagingcontrols.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_messagingcontrols.o moc_messagingcontrols.cpp
+GenerateKeys.o: GenerateKeys.cpp GenerateKeys.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o GenerateKeys.o GenerateKeys.cpp
+
+Main.o: Main.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Main.o Main.cpp
+
+MessagingControls.o: MessagingControls.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MessagingControls.o MessagingControls.cpp
+
+moc_MessagingControls.o: moc_MessagingControls.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_MessagingControls.o moc_MessagingControls.cpp
 
 ####### Install
 
