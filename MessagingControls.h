@@ -8,6 +8,8 @@
 #include <QLabel>
 #include <QMenuBar>
 #include <QMainWindow>
+#include <QMenu>
+#include <QAction>
 
 class QLabel;
 class QLineEdit;
@@ -15,13 +17,17 @@ class QTextEdit;
 class QPushButton;
 class QMenuBar;
 class QMainWindow;
+class QMenu;
+class QAction;
 
-class MessagingControls : public QDialog
+class MessagingControls : public QMainWindow
 {
 	Q_OBJECT
 public:
-	MessagingControls(QWidget* parent = 0);
+	MessagingControls();
 	~MessagingControls();
+
+
 
 signals:
 
@@ -29,12 +35,16 @@ signals:
 private slots:
 
 private:	
+	void createMenus();
+
 	QLineEdit* encryptedBox;
 	QLabel* lblOfEncryptedBox;
 	QTextEdit* textToEncrypt;
 	QPushButton* encryptionButon;
-	QMenuBar* menuStuff;
-	QMainWindow* mainWindow;
+	QMenu* fileMenu;
+	QMenu* editMenu;
+	QAction* closeApplication;
+	QAction* keyEdit;	
 };
 
 #endif
