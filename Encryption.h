@@ -4,20 +4,18 @@
 #include <fstream>
 #include <string>
 
-class Encryption
+#include "Cryption.h"
+
+class Encryption : public Cryption
 {
 public:
 
 	Encryption();
+	Encryption(const std::string&);
 
-	void setMessage(const std::string);
 	void encryptMessage();
 
-	std::string getMessage() const;	
-
 private:
-	std::fstream writeToFile;
-	std::string message;
 };
 
 #endif

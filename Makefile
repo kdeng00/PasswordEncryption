@@ -50,11 +50,13 @@ OBJECTS_DIR   = ./
 
 SOURCES       = Decryption.cpp \
 		Encryption.cpp \
+		Cryption.cpp \
 		GenerateKeys.cpp \
 		Main.cpp \
 		MessagingControls.cpp moc_MessagingControls.cpp
 OBJECTS       = Decryption.o \
 		Encryption.o \
+		Cryption.o \
 		GenerateKeys.o \
 		Main.o \
 		MessagingControls.o \
@@ -167,8 +169,10 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		EncryptedMessaging.pro Decryption.h \
 		Encryption.h \
 		GenerateKeys.h \
-		MessagingControls.h Decryption.cpp \
+		MessagingControls.h \
+		Cryption.h Decryption.cpp \
 		Encryption.cpp \
+		Cryption.cpp \
 		GenerateKeys.cpp \
 		Main.cpp \
 		MessagingControls.cpp
@@ -417,8 +421,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents Decryption.h Encryption.h GenerateKeys.h MessagingControls.h $(DISTDIR)/
-	$(COPY_FILE) --parents Decryption.cpp Encryption.cpp GenerateKeys.cpp Main.cpp MessagingControls.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents Decryption.h Encryption.h GenerateKeys.h MessagingControls.h Cryption.h $(DISTDIR)/
+	$(COPY_FILE) --parents Decryption.cpp Encryption.cpp Cryption.cpp GenerateKeys.cpp Main.cpp MessagingControls.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -473,20 +477,25 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 ####### Compile
 
 Decryption.o: Decryption.cpp Decryption.h \
+		Cryption.h \
 		GenerateKeys.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Decryption.o Decryption.cpp
 
 Encryption.o: Encryption.cpp Encryption.h \
+		Cryption.h \
 		GenerateKeys.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Encryption.o Encryption.cpp
+
+Cryption.o: Cryption.cpp Cryption.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Cryption.o Cryption.cpp
 
 GenerateKeys.o: GenerateKeys.cpp GenerateKeys.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o GenerateKeys.o GenerateKeys.cpp
 
-Main.o: Main.cpp 
+Main.o: Main.cpp MessagingControls.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Main.o Main.cpp
 
-MessagingControls.o: MessagingControls.cpp 
+MessagingControls.o: MessagingControls.cpp MessagingControls.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MessagingControls.o MessagingControls.cpp
 
 moc_MessagingControls.o: moc_MessagingControls.cpp 

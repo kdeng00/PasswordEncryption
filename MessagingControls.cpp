@@ -1,7 +1,6 @@
 #include <QtGui>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QDockWidget>
+#include <QString>
+#include <iostream>
 
 #include "MessagingControls.h"
 
@@ -10,49 +9,9 @@ MessagingControls::MessagingControls()
 	/**
 	 * Initialize controls
 	 */
-	//QVBoxLayout* everything = new QVBoxLayout;
+	cryptionChoice = true;
 
-	//menuStuff = new QMenuBar;
-	//mainWindow = new QMainWindow;
-
-	lblOfEncryptedBox = new QLabel(tr("Message: "));
-
-	textToEncrypt = new QTextEdit;
-	//encryptedBox = new QLineEdit;
-
-	encryptionButon = new QPushButton;
-
-	//Adding lbl and line edit
-	//QHBoxLayout* lblAndLineEdit = new QHBoxLayout;
-	//lblAndLineEdit->addWidget(lblOfEncryptedBox);
-	//lblAndLineEdit->addWidget(textToEncrypt);
-
-	//Adding button
-	//QHBoxLayout* button = new QHBoxLayout;
-	//button->addWidget(encryptionButon);
-
-	//Add everything
-	//everything->addLayout(menuStuff);
-	//everything->addLayout(lblAndLineEdit);
-	//everything->addLayout(button);
-
-	createMenus();
-
-	QDockWidget* lblAndArea = new QDockWidget(tr("Dock Widget"));
-	lblAndArea->setWidget(textToEncrypt);
-	//lblAndArea->setWidget(lblOfEncryptedBox);
-
-	addDockWidget(Qt::LeftDockWidgetArea, lblAndArea);
-	
-	//mainWindow->addDockWidget(Qt::LeftDockWidgetArea, lblAndArea);
-	//mainWindow->addDockWidget(lblAndArea);
-	//mainWindow->addDockWidget(textToEncrypt);
-	//mainWindow->addDockWidget(encryptionButon);
-
-	//setLayout(mainWindow);
-	setWindowTitle("Encryption Messaging");
-	setFixedHeight(300);
-	setFixedWidth(400);
+	setupMainWindow();
 }
 MessagingControls::~MessagingControls()
 {
@@ -60,13 +19,47 @@ MessagingControls::~MessagingControls()
 	 * Delete pointer types
 	 */
 	delete lblOfEncryptedBox;
-	delete encryptionButon;
-	delete textToEncrypt;
-	//delete encryptedBox;
+	delete cryptionButon;
+	delete textForCryption;
 
 }
 
 
+void MessagingControls::setupMainWindow()
+{
+	textForCryption = new QTextEdit;
+
+
+	cryptionButon = new QPushButton(tr("XO"));
+	cryptionSwitch = new QPushButton(tr("encrypt"));
+
+
+	buttonLayout = new QVBoxLayout;
+	buttonWidget = new QWidget;
+	buttonDockWidget = new QDockWidget;
+	buttonDockWidget->setWindowTitle(tr("Cryption Controls"));
+	buttonLayout->addWidget(cryptionButon);
+	buttonLayout->addWidget(cryptionSwitch);
+	buttonWidget->setLayout(buttonLayout);
+	buttonDockWidget->setWidget(buttonWidget);
+	buttonDockWidget->setFeatures(QDockWidget::NoDockWidgetFeatures);
+	setCentralWidget(buttonDockWidget);
+
+	QDockWidget* cryptionArea = new QDockWidget(tr("Cryption"));
+	cryptionArea->setWidget(textForCryption);
+	cryptionArea->setFeatures(QDockWidget::NoDockWidgetFeatures);
+	addDockWidget(Qt::LeftDockWidgetArea, cryptionArea);
+
+	createMenus();
+
+	QObject::connect(closeApplication, SIGNAL(triggered()), this, SLOT(close()));
+	QObject::connect(cryptionSwitch, SIGNAL(clicked()), this, SLOT(changeCryptionType()));
+	QObject::connect(cryptionButon, SIGNAL(clicked()), this, SLOT(determineCryption()));
+
+	setWindowTitle("Encryption Decryption Messaging");
+	setFixedHeight(mainWindowHeight);
+	setFixedWidth(mainWindowWidth);
+}
 void MessagingControls::createMenus()
 {
 	fileMenu = menuBar()->addMenu(tr("File"));
@@ -78,5 +71,42 @@ void MessagingControls::createMenus()
 	fileMenu->addAction(closeApplication);
 
 	editMenu->addAction(keyEdit);
+}
+
+
+void MessagingControls::changeCryptionType()
+{
+	if (cryptionChoice)
+	{
+		cryptionSwitch->setText("decrypt");
+		cryptionChoice = false;
+	}
+	else
+	{
+		cryptionSwitch->setText("encrypt");
+		cryptionChoice = true;
+	}
+}
+void MessagingControls::determineCryption()
+{
+	if (cryptionChoice)
+	{
+		/**
+		 * Decrypt Message
+		 */
+	}
+	else
+	{
+		/**
+		 * Encrypt Message
+		 */
+	}
+	//std::string s;
+	//s = textForCryption->toPlainText().toStdString();
+	//std::cout << s << std::endl;
+	//QString* str = textForCryption->toPlainText();
+	//s = str->toStdString();
+	//s = static_cast<std::string>(textForCryption->toPlainText());
+	//std::cout << textForCryption->toPlainText() << std::endl;
 
 }

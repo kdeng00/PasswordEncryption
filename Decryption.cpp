@@ -9,28 +9,28 @@ Decryption::Decryption()
 {
 		
 }
-
-
-void Decryption::setMessage(const std::string message)
+Decryption::Decryption(const std::string& message)
 {
 	this->message = message;
 }
+
+
 void Decryption::decryptMessage()
 {
 	GenerateKeys gk;	
 
-	readFromFile.open("encryptedFile.txt", std::ios::in);
+	ioEvent.open("encryptedFile.txt", std::ios::in);
 
 	std::string messageToBeDecrypted, decryptedMessage;
 
-	while(!readFromFile.eof())
+	while(!ioEvent.eof())
 	{
 		char whiteSpace = static_cast<char>(32);
 		//std::cout << "Am I stuck?" << std::endl;
-		getline(readFromFile, messageToBeDecrypted, whiteSpace);
+		getline(ioEvent, messageToBeDecrypted, whiteSpace);
 	}
 
-	readFromFile.close();
+	ioEvent.close();
 
 	unsigned short encryptedTwoKey = 2;
 	unsigned short beginningOfAlphabetLowerCase = 97;
@@ -66,10 +66,4 @@ void Decryption::decryptMessage()
 		}
 	}
 	setMessage(decryptedMessage);
-}
-
-
-std::string Decryption::getMessage() const
-{
-	return message;
 }
