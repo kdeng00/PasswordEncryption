@@ -36,6 +36,7 @@ signals:
 private slots:
 	void changeCryptionType();
 	void determineCryption();
+	void keyManagementWindow();
 
 private:	
 	void setupMainWindow();

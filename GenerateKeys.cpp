@@ -4,7 +4,6 @@
 
 GenerateKeys::GenerateKeys()
 {
-
 	populateDecryptedValues();
 	populateEncryptedValues();
 }
@@ -16,22 +15,22 @@ void GenerateKeys::populateDecryptedValues()
 		char character;
 		character = static_cast<char>(number);
 
-		if (number >= 97 && number <= 122)
+		if (number >= startingCharacter && number <= endingCharacter)
 		{
 			decryptedCharacters[number] = character;	
 			//std::cout << decryptedCharacters[number] << " ";
 		}
 	}
 	//std::cout << std::endl;
-	decryptedCharacters[32] = ' ';
+	decryptedCharacters[whiteSpaceCharacter] = ' ';
 }
 void GenerateKeys::populateEncryptedValues()
 {
-	for (unsigned short key = 97; key <= 122; key++)
+	for (unsigned short key = startingCharacter; key <= endingCharacter; key++)
 	{
 		encryptedCharacters[decryptedCharacters[key]] = key;
 		//std::cout << encryptedCharacters[decryptedCharacters[key]] << " ";
 	}
-	encryptedCharacters[decryptedCharacters[32]] = 32;
+	encryptedCharacters[decryptedCharacters[startingCharacter]] = startingCharacter;
 	//std::cout << std::endl;
 }

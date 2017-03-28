@@ -9,10 +9,11 @@ QT += widgets
 INCLUDEPATH += .
 
 # Input
-HEADERS += Decryption.h Encryption.h GenerateKeys.h MessagingControls.h Cryption.h
+HEADERS += Decryption.h Encryption.h GenerateKeys.h MessagingControls.h Cryption.h KeyManagementWindow.h
 SOURCES += Decryption.cpp \
            Encryption.cpp \
 	   Cryption.cpp \
+	   KeyManagementWindow.cpp \
            GenerateKeys.cpp \
            Main.cpp \
            MessagingControls.cpp

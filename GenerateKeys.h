@@ -15,10 +15,14 @@ public:
 
 	friend class Encryption;
 	friend class Decryption;
+	friend class KeyManagementWindow;
 
 private:
 	std::map<unsignedShort, char> decryptedCharacters;
 	std::map<char, unsignedShort> encryptedCharacters;
+	unsigned short startingCharacter = 97;
+	unsigned short endingCharacter = 122;
+	unsigned short whiteSpaceCharacter = 32;
 };
 
 #endif
