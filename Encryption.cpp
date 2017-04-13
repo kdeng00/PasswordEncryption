@@ -21,10 +21,23 @@ void Encryption::setEncryptedMessage(const std::string& encryptedMessage)
 }
 void Encryption::encryptMessage()
 {
+	int numberOfNewLines{0};
 	GenerateKeys* gk = new GenerateKeys;	
 	ioEvent.open("encryptedFile.txt", std::ios::out);
 
 	std::cout << "String to encrypt: " << message << std::endl;
+	//while (numberOfNewLines != message.size())
+	for (unsigned int index = 0; index != message.size(); ++index)
+	{
+		char stringIndex = message.at(index);
+		//if (message.at(index) == "\n")
+		//if (message.at(index).compare("\n") == 0)	
+		if (stringIndex == '\n')
+		{
+			++numberOfNewLines;
+		}
+	}
+	std::cout << "The message has " << numberOfNewLines << " new lines" << std::endl;
 	for (unsigned short indexOfString = 0; indexOfString < message.size(); indexOfString++)
 	{
 		ioEvent << gk->encryptedCharacters[message.at(indexOfString)];

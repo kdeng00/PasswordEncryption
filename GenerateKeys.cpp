@@ -22,6 +22,7 @@ void GenerateKeys::populateDecryptedValues()
 		}
 	}
 	decryptedCharacters[32] = (char) 32;
+	decryptedCharacters[10] = (char) 10;
 	//std::cout << std::endl;
 	//decryptedCharacters[whiteSpaceCharacter] = ' ';
 	//std::cout << "Whitespace character" << decryptedCharacters[whiteSpaceCharacter] << "d" << std::endl;
@@ -34,6 +35,7 @@ void GenerateKeys::populateEncryptedValues()
 		//std::cout << encryptedCharacters[decryptedCharacters[key]] << " ";
 	}
 	encryptedCharacters[(char) 32] = 32;
+	encryptedCharacters[(char) 10] = 10;
 	//encryptedCharacters[decryptedCharacters[startingCharacter]] = startingCharacter;
 	//std::cout << std::endl;
 }

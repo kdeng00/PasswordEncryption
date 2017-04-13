@@ -70,3 +70,16 @@ std::string Decryption::getDecryptedMessage() const
 
 	return decryptedMessage;
 }	
+
+
+unsigned short getTwoNumberedKey(unsigned short& number)
+{
+	std::string wholeNumber = std::to_string(number);
+	char hundred[] = {wholeNumber.at(0)};
+	char ten[] = {wholeNumber.at(1)};
+	char one[] {wholeNumber.at(2)};
+
+
+	unsigned short hundread, ten, one;
+	hundread = number.at()
+}
