@@ -1,16 +1,19 @@
 #include <QtGui>
 #include <QString>
+#include <QIcon>
 #include <iostream>
 
 #include "MessagingControls.h"
 #include "KeyManagementWindow.h"
 #include "Encryption.h"
+#include"Decryption.h"
 
 MessagingControls::MessagingControls()
 {
 	/**
 	 * Initialize controls
 	 */
+	textForCryption = new QTextEdit;
 	cryptionChoice = true;
 
 	setupMainWindow();
@@ -29,10 +32,6 @@ MessagingControls::~MessagingControls()
 
 void MessagingControls::setupMainWindow()
 {
-	textForCryption = new QTextEdit;
-	textForCryption->setText("sdfs");
-	textForCryption->clear();
-
 
 	cryptionButon = new QPushButton(tr("XO"));
 	cryptionSwitch = new QPushButton(tr("encrypt chosen"));
@@ -70,8 +69,11 @@ void MessagingControls::createMenus()
 	fileMenu = menuBar()->addMenu(tr("File"));
 	editMenu = menuBar()->addMenu(tr("Edit"));
 
-	closeApplication = new QAction(tr("Quit Application"));
-	keyEdit = new QAction(tr("Key Edit"));
+	closeApplication = new QAction(new QObject(nullptr));
+	closeApplication->setText("Exit Application");
+
+	keyEdit = new QAction(new QObject(nullptr)); 
+	keyEdit->setText("Key Management");
 
 	fileMenu->addAction(closeApplication);
 
@@ -96,44 +98,47 @@ void MessagingControls::determineCryption()
 {
 	if (cryptionChoice)
 	{
-		QString content;
-		content = textForCryption->toPlainText();
-		std::string message = content.toStdString();
-
 		Encryption ec;
-		ec.setMessage(message);
+		ec.setMessage(grabCryptionText());
 		ec.encryptMessage();
 
-		std::cout << ec.getEncryptedMessage() << std::endl;
-		QString messageQ = QString::fromStdString(ec.getEncryptedMessage());
 		textForCryption->clear();
-		textForCryption->setText(messageQ);
+		textForCryption->setText(QString::fromStdString(ec.getEncryptedMessage()));
 
 		cryptionSwitch->setText("decrypt chosen");
 		cryptionChoice = false;
 		/**
-		 * Decrypt Message
+		 * Encrypt Message
 		 */
 	}
 	else
 	{
+		Decryption dc;
+		dc.setMessage(grabCryptionText());
+		dc.decryptMessage();
+
+		textForCryption->clear();
+		textForCryption->setText(QString::fromStdString(dc.getDecryptedMessage()));
+
+		cryptionSwitch->setText("encrypt chosen");
+		cryptionChoice = true;
 		/**
-		 * Encrypt Message
+		 * Decrypt Message
 		 */
 	}
-	//std::string s;
-	//s = textForCryption->toPlainText().toStdString();
-	//std::cout << s << std::endl;
-	//QString* str = textForCryption->toPlainText();
-	//s = str->toStdString();
-	//s = static_cast<std::string>(textForCryption->toPlainText());
-	//std::cout << textForCryption->toPlainText() << std::endl;
-
 }
 void MessagingControls::keyManagementWindow()
 {
 	KeyManagementWindow* kh = new KeyManagementWindow;
 
 	kh->show();
-
 }
+
+
+std::string MessagingControls::grabCryptionText()
+{
+	QString placeHolder = textForCryption->toPlainText();
+	std::string message = placeHolder.toStdString();
+	
+	return message;
+}	

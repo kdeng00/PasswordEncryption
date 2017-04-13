@@ -15,6 +15,10 @@ Decryption::Decryption(const std::string& message)
 }
 
 
+void Decryption::setDecryptedMessage(const std::string& message)
+{
+	this->decryptedMessage = message;
+}	
 void Decryption::decryptMessage()
 {
 	GenerateKeys gk;	
@@ -25,9 +29,7 @@ void Decryption::decryptMessage()
 
 	while(!ioEvent.eof())
 	{
-		char whiteSpace = static_cast<char>(32);
-		//std::cout << "Am I stuck?" << std::endl;
-		getline(ioEvent, messageToBeDecrypted, whiteSpace);
+		ioEvent >> messageToBeDecrypted;
 	}
 
 	ioEvent.close();
@@ -50,20 +52,21 @@ void Decryption::decryptMessage()
 				otherElements[2] = {' '};
 				number = atoi(otherElements);
 				decryptedMessage += gk.decryptedCharacters[number];
-				//decryptedMessage.append(gk.decryptedCharacters[number]);
-				//newWord += characters[number];
 				index += 1;
-					
 			}
 			else
 			{
 				decryptedMessage += gk.decryptedCharacters[number];
-				//decryptedMessage.append(gk.decryptedCharacters[number]);
-				//newWord += characters[number];
 				index += 2;
-			
 			}
 		}
 	}
-	setMessage(decryptedMessage);
+	setDecryptedMessage(decryptedMessage);
 }
+
+
+std::string Decryption::getDecryptedMessage() const
+{
+
+	return decryptedMessage;
+}	

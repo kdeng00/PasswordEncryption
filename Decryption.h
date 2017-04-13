@@ -13,9 +13,13 @@ public:
 	Decryption();
 	Decryption(const std::string&);
 
+	void setDecryptedMessage(const std::string&);
 	void decryptMessage();
 
+	std::string getDecryptedMessage() const;
+
 private:
+	std::string decryptedMessage;
 };
 
 #endif

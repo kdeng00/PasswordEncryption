@@ -13,6 +13,7 @@
 #include <QVBoxLayout>
 #include <QDockWidget>
 #include <QWidget>
+#include<QString>
 
 class QLabel;
 class QLineEdit;
@@ -22,6 +23,7 @@ class QMenuBar;
 class QMainWindow;
 class QMenu;
 class QAction;
+class QString;
 
 class MessagingControls : public QMainWindow
 {
@@ -41,7 +43,6 @@ private slots:
 private:	
 	void setupMainWindow();
 	void createMenus();
-
 	QVBoxLayout* buttonLayout;
 
 	QWidget* buttonWidget;
@@ -62,6 +63,9 @@ private:
 	QMenu* editMenu;
 	QAction* closeApplication;
 	QAction* keyEdit;	
+
+
+	std::string grabCryptionText();
 
 	unsigned short mainWindowHeight = 450;
 	unsigned short mainWindowWidth = 550;
