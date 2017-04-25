@@ -19,7 +19,8 @@ public:
 	std::string getDecryptedMessage() const;
 
 private:
-	std::string decryptedMessage;
+	std::string cstringToString(char[], const int&);
+	std::string decryptedMessage{};
 };
 
 #endif

@@ -10,9 +10,6 @@
 
 MessagingControls::MessagingControls()
 {
-	/**
-	 * Initialize controls
-	 */
 	textForCryption = new QTextEdit;
 	cryptionChoice = true;
 
@@ -20,9 +17,6 @@ MessagingControls::MessagingControls()
 }
 MessagingControls::~MessagingControls()
 {
-	 /**
-	 * Delete pointer types
-	 */
 	delete lblOfEncryptedBox;
 	delete cryptionButon;
 	delete textForCryption;
@@ -32,10 +26,8 @@ MessagingControls::~MessagingControls()
 
 void MessagingControls::setupMainWindow()
 {
-
 	cryptionButon = new QPushButton(tr("XO"));
 	cryptionSwitch = new QPushButton(tr("encrypt chosen"));
-
 
 	buttonLayout = new QVBoxLayout;
 	buttonWidget = new QWidget;
@@ -98,8 +90,7 @@ void MessagingControls::determineCryption()
 {
 	if (cryptionChoice)
 	{
-		Encryption ec;
-		ec.setMessage(grabCryptionText());
+		Encryption ec{grabCryptionText()};
 		ec.encryptMessage();
 
 		textForCryption->clear();
@@ -107,14 +98,10 @@ void MessagingControls::determineCryption()
 
 		cryptionSwitch->setText("decrypt chosen");
 		cryptionChoice = false;
-		/**
-		 * Encrypt Message
-		 */
 	}
 	else
 	{
-		Decryption dc;
-		dc.setMessage(grabCryptionText());
+		Decryption dc{grabCryptionText()};
 		dc.decryptMessage();
 
 		textForCryption->clear();
@@ -122,15 +109,11 @@ void MessagingControls::determineCryption()
 
 		cryptionSwitch->setText("encrypt chosen");
 		cryptionChoice = true;
-		/**
-		 * Decrypt Message
-		 */
 	}
 }
 void MessagingControls::keyManagementWindow()
 {
 	KeyManagementWindow* kh = new KeyManagementWindow;
-
 	kh->show();
 }
 

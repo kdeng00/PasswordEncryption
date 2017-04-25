@@ -9,7 +9,6 @@
 class Encryption : public Cryption
 {
 public:
-
 	Encryption();
 	Encryption(const std::string&);
 
@@ -19,7 +18,7 @@ public:
 	std::string getEncryptedMessage() const;
 
 private:
-	std::string encryptedMessage;
+	std::string encryptedMessage{};
 };
 
 #endif

@@ -7,7 +7,6 @@
 
 Encryption::Encryption()
 {
-		
 }
 Encryption::Encryption(const std::string& message)
 {
@@ -22,34 +21,23 @@ void Encryption::setEncryptedMessage(const std::string& encryptedMessage)
 void Encryption::encryptMessage()
 {
 	int numberOfNewLines{0};
-	GenerateKeys* gk = new GenerateKeys;	
+	GenerateKeys gk{};	
 	ioEvent.open("encryptedFile.txt", std::ios::out);
 
-	std::cout << "String to encrypt: " << message << std::endl;
-	//while (numberOfNewLines != message.size())
-	for (unsigned int index = 0; index != message.size(); ++index)
+	//std::cout << "String to encrypt: " << message << std::endl;
+	for (auto index = 0; index != message.size(); ++index)
 	{
 		char stringIndex = message.at(index);
-		//if (message.at(index) == "\n")
-		//if (message.at(index).compare("\n") == 0)	
 		if (stringIndex == '\n')
-		{
 			++numberOfNewLines;
-		}
 	}
-	std::cout << "The message has " << numberOfNewLines << " new lines" << std::endl;
-	for (unsigned short indexOfString = 0; indexOfString < message.size(); indexOfString++)
+	for (auto indexOfString = 0; indexOfString!=message.size(); ++indexOfString)
 	{
-		ioEvent << gk->encryptedCharacters[message.at(indexOfString)];
-		//std::cout << gk->encryptedCharacters[message.at(indexOfString)] << std::endl;
-		encryptedMessage += std::to_string(gk->encryptedCharacters[message.at(indexOfString)]);
-		//std::cout << encryptedMessage << std::endl;
+		ioEvent << gk.encryptedCharacters[message.at(indexOfString)];
+		encryptedMessage += (gk.encryptedCharacters[message.at(indexOfString)]);
 	}
-
 	setEncryptedMessage(encryptedMessage);
 	ioEvent.close();
-
-	delete gk;
 }
 
 

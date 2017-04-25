@@ -5,6 +5,7 @@
 #include <QHBoxLayout>
 #include <QString>
 #include <string>
+#include<sstream>
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
@@ -41,45 +42,27 @@ void KeyManagementWindow::setContentsOfComboBox()
 {
 	GenerateKeys gk;
 
-	for (unsigned short keyIndex = gk.startingCharacter; keyIndex <= gk.endingCharacter; keyIndex++)
+	std::cout << "got here" << std::endl;
+	for (auto index = 0; index!=gk.allCharacters.size(); ++index)
 	{
-		std::string ch = "";
-		ch += gk.decryptedCharacters[keyIndex];
-		QString bl = QString::fromStdString(ch); 
+		std::string ch{static_cast<char>(gk.allCharacters[index])};
+		QString bl = QString::fromStdString(ch);
 		comboBoxOfKeys->addItem(bl);
 	}
 }
 void KeyManagementWindow::test()
 {
 	GenerateKeys gk;
-	//std::cout << "bang bang!" << std::endl;
 	QString bo = comboBoxOfKeys->currentText();
 	std::string k = bo.toStdString();
 	char f;
 
-	std::fstream in;
-	in.open("strToCh.txt", std::ios::out);
+	std::stringstream lazy{}; 
+	lazy << k;
+	lazy >> f;
+	//std::cout << "character: " << f << std::endl;
 
-	in << k;
-	in.close();
-
-	in.open("strToCh.txt", std::ios::in);
-
-	in >> f;
-	in.close();
-
-	in.open("strToCh.txt", std::ios::out);
-	in << gk.encryptedCharacters[f];
-	in.close();
-
-	unsigned short yek;
-	in.open("strToCh.txt", std::ios::in);
-	in >> yek;
-	in.close();
-
-	std::string key = "";
-	key += std::to_string(yek);
-	//std::cout << gk.encryptedCharacters[f] << std::endl;
-	QString v = QString::fromStdString(key);
+	std::string value{gk.encryptedCharacters[f]};	
+	QString v = QString::fromStdString(value);
 	valueOfKey->setText(v);
 }

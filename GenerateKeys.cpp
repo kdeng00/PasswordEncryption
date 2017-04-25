@@ -1,41 +1,145 @@
 #include <iostream>
+#include<sstream>
+#include<fstream>
+#include<ios>
 
 #include "GenerateKeys.h"
 
 GenerateKeys::GenerateKeys()
 {
+	populateSymbols();
+	populateNumbers();
+	populateLetters();
+
+	for (auto index = 0; index!=symbols.size(); ++index)
+		allCharacters.push_back(symbols[index]);
+	for (auto index = 0; index!=numbers.size(); ++index)
+		allCharacters.push_back(numbers[index]);
+	for (auto index = 0; index!=letters.size(); ++index)
+		allCharacters.push_back(letters[index]);
+
 	populateDecryptedValues();
 	populateEncryptedValues();
 }
 
 void GenerateKeys::populateDecryptedValues()
 {
-	for (unsigned short number = 0; number < 300; number++)
+	std::fstream readKeys{};
+	readKeys.open("default_keys.txt", std::ios::in);
+	std::string tmpKey{};
+	for (auto index = 0; index!=allCharacters.size(); ++index)
 	{
-		char character;
-		character = static_cast<char>(number);
-
-		if (number >= startingCharacter && number <= endingCharacter)
-		{
-			decryptedCharacters[number] = character;	
-			//std::cout << decryptedCharacters[number] << " ";
-		}
+		readKeys >> tmpKey;
+		decryptedCharacters[tmpKey] = static_cast<char>(allCharacters[index]);
+		tmpKey = "";
 	}
-	decryptedCharacters[32] = (char) 32;
-	decryptedCharacters[10] = (char) 10;
-	//std::cout << std::endl;
-	//decryptedCharacters[whiteSpaceCharacter] = ' ';
-	//std::cout << "Whitespace character" << decryptedCharacters[whiteSpaceCharacter] << "d" << std::endl;
+	readKeys.close();
+	decryptedCharacters["#2a9u"] = (char) 32;
+	decryptedCharacters["6*dw4"] = (char) 10;
 }
 void GenerateKeys::populateEncryptedValues()
 {
-	for (unsigned short key = startingCharacter; key <= endingCharacter; key++)
-	{
-		encryptedCharacters[decryptedCharacters[key]] = key;
-		//std::cout << encryptedCharacters[decryptedCharacters[key]] << " ";
+	std::fstream readKeys{};
+	readKeys.open("default_keys.txt", std::ios::in);
+	std::string tmpKey{};
+	for (auto index = 0; index!=allCharacters.size(); ++index)
+	{	
+		readKeys >> tmpKey;
+		encryptedCharacters[decryptedCharacters[tmpKey]] = tmpKey;
+		tmpKey = "";
 	}
-	encryptedCharacters[(char) 32] = 32;
-	encryptedCharacters[(char) 10] = 10;
-	//encryptedCharacters[decryptedCharacters[startingCharacter]] = startingCharacter;
-	//std::cout << std::endl;
+	readKeys.close();
+	encryptedCharacters[(char) 32] = "#2a9u";
+	encryptedCharacters[(char) 10] = "6*dw4";
+}
+
+void GenerateKeys::populateSymbols()
+{
+	symbols.push_back(33);
+	addRange(symbols, 35, 38);
+	addRange(symbols, 40, 46);
+	addRange(symbols, 58, 64);
+	addRange(symbols, 93, 96);
+	addRange(symbols, 123, 126);
+}
+void GenerateKeys::populateNumbers()
+{
+	addRange(numbers, 48, 57);
+}
+void GenerateKeys::populateLetters()
+{
+	addRange(letters, 97, 122);
+}
+void GenerateKeys::addRange(std::vector<int>& ch, int from, const int to)
+{
+	auto range = to - from;
+	for (auto index = 0; index<=range; ++index)
+	{
+		ch.push_back(from);
+		++from;
+	}
+}
+void GenerateKeys::generateKey(std::string& key, const int& SIZE)
+{
+	char ky[SIZE]{};
+	for (auto index = 0; index!=SIZE; ++index)
+	{
+		if (index < 2)
+			ky[index] = getChar(letters);
+		else if (index < 3 && index > 1)
+			ky[index] = getChar(symbols);
+		else
+			ky[index] = getChar(numbers);
+	}
+	std::stringstream charToString;
+	for (auto index = 0; index!=SIZE; ++index)
+		charToString << ky[index];
+	while (charToString>>key)
+		charToString >> key;
+}
+void GenerateKeys::keyMove()
+{
+	std::string tmpKey{};
+	for (auto index = 0; index!=totalCharacters; ++index)
+	{
+		generateKey(tmpKey, keySize);
+		keys.push_back(tmpKey);
+		tmpKey = "";
+	}
+}
+void GenerateKeys::print(const std::vector<int>& ch)
+{
+	for (auto index = 0; index!=ch.size(); ++index)
+		std::cout << ch[index] << " ";
+	std::cout << std::endl;
+}
+void GenerateKeys::checkRepetition()
+{
+	for (auto index = 0; index!=totalCharacters; ++index)
+	{
+		std::string chosenOne{keys[index]};
+		auto repetition{0};
+		for (auto innerIndex = 0; innerIndex!=totalCharacters; ++innerIndex)
+		{
+			if (chosenOne == keys[innerIndex])
+				++repetition;
+		}
+		if (repetition > 1)
+			std::cout << "Too much repetitive stuff" << std::endl;
+	}
+}
+void GenerateKeys::keyDump()
+{
+	std::fstream dump{};
+	dump.open("default_keys.txt", std::ios::out);
+	for (auto index = 0; index!=keys.size(); ++index)
+		dump << keys[index] << '\n';
+	dump.close();
+}
+
+
+char GenerateKeys::getChar(std::vector<int>& ch)
+{
+	auto hc = ch[rand() % ch.size()];
+	return hc;
 }

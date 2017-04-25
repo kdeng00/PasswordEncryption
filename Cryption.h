@@ -9,16 +9,14 @@ class Cryption
 public:
 	Cryption();
 	Cryption(const std::string&);
-
-	void setMessage(const std::string&);
+	//void setMessage(const std::string&);
 
 	std::string getMessage() const;
-
 protected:
+	void setMessage(const std::string&);
+
 	std::string message;
 	std::fstream ioEvent;
-
-private:	
 };
 
 #endif

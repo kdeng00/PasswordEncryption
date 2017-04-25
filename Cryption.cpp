@@ -2,7 +2,6 @@
 
 Cryption::Cryption()
 {
-
 }
 Cryption::Cryption(const std::string& message)
 {
