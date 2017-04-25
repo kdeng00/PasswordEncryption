@@ -67,10 +67,10 @@ private:
 
 	std::string grabCryptionText();
 
-	unsigned short mainWindowHeight = 450;
-	unsigned short mainWindowWidth = 550;
+	int mainWindowHeight{450};
+	int mainWindowWidth{550};
 
-	bool cryptionChoice;
+	bool cryptionChoice{};
 };
 
 #endif

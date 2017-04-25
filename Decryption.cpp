@@ -65,7 +65,7 @@ std::string Decryption::cstringToString(char tmp[], const int& SIZE)
 
 unsigned short getTwoNumberedKey(unsigned short& number)
 {
-	std::string wholeNumber = std::to_string(number);
+	std::string wholeNumber{std::to_string(number)};
 	char hundred[] = {wholeNumber.at(0)};
 	char ten[] = {wholeNumber.at(1)};
 	char one[] {wholeNumber.at(2)};

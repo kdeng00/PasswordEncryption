@@ -15,8 +15,8 @@ public:
 protected:
 	void setMessage(const std::string&);
 
-	std::string message;
-	std::fstream ioEvent;
+	std::string message{};
+	std::fstream ioEvent{};
 };
 
 #endif
