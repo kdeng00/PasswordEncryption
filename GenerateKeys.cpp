@@ -1,9 +1,9 @@
-#include <iostream>
+#include<iostream>
 #include<sstream>
 #include<fstream>
 #include<ios>
 
-#include "GenerateKeys.h"
+#include"GenerateKeys.h"
 
 GenerateKeys::GenerateKeys()
 {
@@ -11,23 +11,25 @@ GenerateKeys::GenerateKeys()
 	populateNumbers();
 	populateLetters();
 
-	for (auto index = 0; index!=symbols.size(); ++index)
+	for (auto index = 0u; index!=symbols.size(); ++index)
 		allCharacters.push_back(symbols[index]);
-	for (auto index = 0; index!=numbers.size(); ++index)
+	for (auto index = 0u; index!=numbers.size(); ++index)
 		allCharacters.push_back(numbers[index]);
-	for (auto index = 0; index!=letters.size(); ++index)
+	for (auto index = 0u; index!=letters.size(); ++index)
 		allCharacters.push_back(letters[index]);
 
 	populateDecryptedValues();
 	populateEncryptedValues();
 }
+GenerateKeys::~GenerateKeys()
+{ }
 
 void GenerateKeys::populateDecryptedValues()
 {
 	std::fstream readKeys{};
-	readKeys.open("default_keys.txt", std::ios::in);
+	readKeys.open(defaultKeyFileName, std::ios::in);
 	std::string tmpKey{};
-	for (auto index = 0; index!=allCharacters.size(); ++index)
+	for (auto index = 0u; index!=allCharacters.size(); ++index)
 	{
 		readKeys >> tmpKey;
 		decryptedCharacters[tmpKey] = static_cast<char>(allCharacters[index]);
@@ -40,9 +42,9 @@ void GenerateKeys::populateDecryptedValues()
 void GenerateKeys::populateEncryptedValues()
 {
 	std::fstream readKeys{};
-	readKeys.open("default_keys.txt", std::ios::in);
+	readKeys.open(defaultKeyFileName, std::ios::in);
 	std::string tmpKey{};
-	for (auto index = 0; index!=allCharacters.size(); ++index)
+	for (auto index = 0u; index!=allCharacters.size(); ++index)
 	{	
 		readKeys >> tmpKey;
 		encryptedCharacters[decryptedCharacters[tmpKey]] = tmpKey;
@@ -99,21 +101,26 @@ void GenerateKeys::generateKey(std::string& key, const int& SIZE)
 }
 void GenerateKeys::keyMove()
 {
-	std::string tmpKey{};
 	for (auto index = 0; index!=totalCharacters; ++index)
 	{
+		std::string tmpKey{};	
 		generateKey(tmpKey, keySize);
 		keys.push_back(tmpKey);
-		tmpKey = "";
 	}
+	if (isThereRepetition())
+	{
+		keys.clear();
+		keyMove();
+	}
+	std::cout << "No repetitions in keys" << std::endl;
 }
 void GenerateKeys::print(const std::vector<int>& ch)
 {
-	for (auto index = 0; index!=ch.size(); ++index)
+	for (auto index = 0u; index!=ch.size(); ++index)
 		std::cout << ch[index] << " ";
 	std::cout << std::endl;
 }
-void GenerateKeys::checkRepetition()
+bool GenerateKeys::isThereRepetition()
 {
 	for (auto index = 0; index!=totalCharacters; ++index)
 	{
@@ -125,14 +132,18 @@ void GenerateKeys::checkRepetition()
 				++repetition;
 		}
 		if (repetition > 1)
+		{	
 			std::cout << "Too much repetitive stuff" << std::endl;
+			return true;
+		}	
 	}
+	return false;
 }
 void GenerateKeys::keyDump()
 {
 	std::fstream dump{};
-	dump.open("default_keys.txt", std::ios::out);
-	for (auto index = 0; index!=keys.size(); ++index)
+	dump.open(defaultKeyFileName, std::ios::out);
+	for (auto index = 0u; index!=keys.size(); ++index)
 		dump << keys[index] << '\n';
 	dump.close();
 }

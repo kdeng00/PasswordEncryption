@@ -1,15 +1,16 @@
 #ifndef ENCRYPTION_H
 #define ENCRYPTION_H
 
-#include <fstream>
-#include <string>
+#include<fstream>
+#include<string>
 
-#include "Cryption.h"
+#include"Cryption.h"
 
 class Encryption : public Cryption
 {
 public:
 	Encryption();
+	~Encryption();
 	Encryption(const std::string&);
 
 	void setEncryptedMessage(const std::string&);

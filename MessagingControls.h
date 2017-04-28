@@ -1,18 +1,18 @@
 #ifndef MESSAGINGCONTROLS_H
 #define MESSAGINGCONTROLS_H
 
-#include <QDialog>
-#include <QPushButton>
-#include <QLineEdit>
-#include <QTextEdit>
-#include <QLabel>
-#include <QMenuBar>
-#include <QMainWindow>
-#include <QMenu>
-#include <QAction>
-#include <QVBoxLayout>
-#include <QDockWidget>
-#include <QWidget>
+#include<QDialog>
+#include<QPushButton>
+#include<QLineEdit>
+#include<QTextEdit>
+#include<QLabel>
+#include<QMenuBar>
+#include<QMainWindow>
+#include<QMenu>
+#include<QAction>
+#include<QVBoxLayout>
+#include<QDockWidget>
+#include<QWidget>
 #include<QString>
 
 class QLabel;

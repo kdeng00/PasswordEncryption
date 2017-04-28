@@ -1,30 +1,28 @@
-#include <ios>
-#include <iostream>
-#include <string>
+#include<ios>
+#include<iostream>
+#include<string>
 
-#include "Encryption.h"
-#include "GenerateKeys.h"
+#include"Encryption.h"
+#include"GenerateKeys.h"
 
 Encryption::Encryption()
-{
-}
+{ }
+
+Encryption::~Encryption()
+{ }
+
 Encryption::Encryption(const std::string& message)
-{
-	this->message = message;
-}
+{ this->message = message; }
 
 
 void Encryption::setEncryptedMessage(const std::string& encryptedMessage)
-{
-	this->encryptedMessage = encryptedMessage;
-}
+{ this->encryptedMessage = encryptedMessage; }
 void Encryption::encryptMessage()
 {
-	int numberOfNewLines{0};
+	auto numberOfNewLines = 0;
 	GenerateKeys gk{};	
 	ioEvent.open("encryptedFile.txt", std::ios::out);
 
-	//std::cout << "String to encrypt: " << message << std::endl;
 	for (auto index = 0; index != message.size(); ++index)
 	{
 		char stringIndex = message.at(index);
@@ -42,6 +40,4 @@ void Encryption::encryptMessage()
 
 
 std::string Encryption::getEncryptedMessage() const
-{
-	return encryptedMessage;
-}
+{ return encryptedMessage; }

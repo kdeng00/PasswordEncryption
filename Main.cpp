@@ -1,6 +1,6 @@
-#include <QApplication>
+#include<QApplication>
 
-#include "MessagingControls.h"
+#include"MessagingControls.h"
 
 int main(int argc, char* argv[])
 {

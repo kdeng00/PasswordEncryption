@@ -8,9 +8,8 @@
 class GenerateKeys
 {
 public:
-	typedef unsigned short unsignedShort;
-
 	GenerateKeys();
+	~GenerateKeys();
 
 	void populateDecryptedValues();
 	void populateEncryptedValues();
@@ -29,20 +28,21 @@ private:
 	void addRange(std::vector<int>&, int, const int);
 
 	void generateKey(std::string&, const int&);
-	void checkRepetition();
+	bool isThereRepetition();
 	void print(const std::vector<int>&);
 
 	char getChar(std::vector<int>&);
 
 
 	std::vector<std::string> keys{};
-	std::vector<int> symbols{};
-	std::vector<int> numbers{};
-	std::vector<int> letters{};
-	std::vector<int> allCharacters{};
+	std::vector<int> symbols;
+	std::vector<int> numbers;
+	std::vector<int> letters;
+	std::vector<int> allCharacters;
 	std::map<char, std::string> encryptedCharacters{};
 	std::map<std::string, char> decryptedCharacters{};
 
+	std::string defaultKeyFileName{"default_keys.txt"};
 	//KeySize show equal the value in key
 	const int keySize{5};
 	const int totalCharacters{63};

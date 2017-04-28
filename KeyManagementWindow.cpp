@@ -1,31 +1,36 @@
-#include "KeyManagementWindow.h"
-#include "GenerateKeys.h"
+#include"KeyManagementWindow.h"
+#include"GenerateKeys.h"
 
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QString>
-#include <string>
+#include<QtWidgets>
+#include<QString>
+#include<QWidget>
+#include<string>
 #include<sstream>
-#include <iostream>
-#include <cstdlib>
-#include <fstream>
-#include <ios>
+#include<iostream>
+#include<cstdlib>
+#include<fstream>
+#include<ios>
 
 KeyManagementWindow::KeyManagementWindow(QWidget* parent) : QDialog(parent)
 {
-	GenerateKeys gk;
+	GenerateKeys gk{};
 
-	comboBoxOfKeys = new QComboBox;
-	valueOfKey = new QLineEdit;
+	comboBoxOfKeys = new QComboBox{};
+	valueOfKey = new QLineEdit{};
+	generateNewDefaultKeys = new QPushButton(tr("Generate New Default Key"));
 
-	QVBoxLayout* vBox = new QVBoxLayout;
-	QHBoxLayout* hBox = new QHBoxLayout;
+	vBox = new QVBoxLayout;
+	hBox = new QHBoxLayout;
+	QHBoxLayout* hBox2 = new QHBoxLayout;
 
 	setContentsOfComboBox();
 	hBox->addWidget(comboBoxOfKeys);
 	hBox->addWidget(valueOfKey);
 
+	hBox2->addWidget(generateNewDefaultKeys);
+
 	vBox->addLayout(hBox);
+	vBox->addLayout(hBox2);
 
 	setLayout(vBox);
 
@@ -35,6 +40,15 @@ KeyManagementWindow::KeyManagementWindow(QWidget* parent) : QDialog(parent)
 	setWindowTitle("Key Management Window");
 
 	QObject::connect(comboBoxOfKeys, SIGNAL(currentIndexChanged(int)), SLOT(test()));
+	QObject::connect(generateNewDefaultKeys, SIGNAL(clicked()), this, SLOT(generation()));
+}
+KeyManagementWindow::~KeyManagementWindow()
+{ 
+	delete comboBoxOfKeys;
+	delete valueOfKey;
+	delete generateNewDefaultKeys;
+	delete hBox;
+	delete vBox;
 }
 
 
@@ -42,8 +56,7 @@ void KeyManagementWindow::setContentsOfComboBox()
 {
 	GenerateKeys gk;
 
-	std::cout << "got here" << std::endl;
-	for (auto index = 0; index!=gk.allCharacters.size(); ++index)
+	for (auto index = 0u; index!=gk.allCharacters.size(); ++index)
 	{
 		std::string ch{static_cast<char>(gk.allCharacters[index])};
 		QString bl = QString::fromStdString(ch);
@@ -52,17 +65,22 @@ void KeyManagementWindow::setContentsOfComboBox()
 }
 void KeyManagementWindow::test()
 {
-	GenerateKeys gk;
-	QString bo = comboBoxOfKeys->currentText();
-	std::string k = bo.toStdString();
-	char f;
+	GenerateKeys gk{};
+	QString bo{comboBoxOfKeys->currentText()};
+	std::string k{bo.toStdString()};
+	char f{};
 
 	std::stringstream lazy{}; 
 	lazy << k;
 	lazy >> f;
-	//std::cout << "character: " << f << std::endl;
 
 	std::string value{gk.encryptedCharacters[f]};	
-	QString v = QString::fromStdString(value);
+	QString v{QString::fromStdString(value)};
 	valueOfKey->setText(v);
+}
+void KeyManagementWindow::generation()
+{
+	GenerateKeys gk{};
+	gk.keyMove();
+	gk.keyDump();
 }

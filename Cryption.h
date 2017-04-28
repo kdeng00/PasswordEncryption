@@ -1,15 +1,15 @@
 #ifndef CRYPTION_H
 #define CRYPTION_H
 
-#include <fstream>
-#include <string>
+#include<fstream>
+#include<string>
 
 class Cryption
 {
 public:
 	Cryption();
+	~Cryption();
 	Cryption(const std::string&);
-	//void setMessage(const std::string&);
 
 	std::string getMessage() const;
 protected:

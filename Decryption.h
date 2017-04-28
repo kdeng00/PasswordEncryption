@@ -1,16 +1,17 @@
 #ifndef DECRYPTION_H
 #define DECRYPTION_H
 
-#include <fstream>
-#include <string>
+#include<fstream>
+#include<string>
 
-#include "Cryption.h"
+#include"Cryption.h"
 
 class Decryption : public Cryption
 {
 public:
 
 	Decryption();
+	~Decryption();
 	Decryption(const std::string&);
 
 	void setDecryptedMessage(const std::string&);

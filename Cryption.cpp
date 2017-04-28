@@ -1,21 +1,18 @@
-#include "Cryption.h"
+#include"Cryption.h"
 
 Cryption::Cryption()
-{
-}
+{ }
+
+Cryption::~Cryption()
+{ }
+
 Cryption::Cryption(const std::string& message)
-{
-	this->message = message;
-}
+{ this->message = message; }
 
 
 void Cryption::setMessage(const std::string& message)
-{
-	this->message = message;
-}
+{ this->message = message; }
 
 
 std::string Cryption::getMessage() const
-{
-	return message;
-}
+{ return message; }

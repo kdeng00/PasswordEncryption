@@ -1,11 +1,11 @@
-#include <QtGui>
-#include <QString>
-#include <QIcon>
-#include <iostream>
+#include<QtGui>
+#include<QString>
+#include<QIcon>
+#include<iostream>
 
-#include "MessagingControls.h"
-#include "KeyManagementWindow.h"
-#include "Encryption.h"
+#include"MessagingControls.h"
+#include"KeyManagementWindow.h"
+#include"Encryption.h"
 #include"Decryption.h"
 
 MessagingControls::MessagingControls()
