@@ -14,6 +14,8 @@
 #include<QDockWidget>
 #include<QWidget>
 #include<QString>
+#include<memory>
+#include"KeyManagementWindow.h"
 
 class QLabel;
 class QLineEdit;
@@ -25,52 +27,52 @@ class QMenu;
 class QAction;
 class QString;
 
+using std::unique_ptr;
+
 class MessagingControls : public QMainWindow
 {
 	Q_OBJECT
 public:
 	MessagingControls();
-	~MessagingControls();
-
+	~MessagingControls() = default;
 signals:
-
 
 private slots:
 	void changeCryptionType();
 	void determineCryption();
 	void keyManagementWindow();
-
 private:	
 	void setupMainWindow();
 	void createMenus();
-	QVBoxLayout* buttonLayout;
 
-	QWidget* buttonWidget;
+	unique_ptr<QVBoxLayout> buttonLayout;
 
-	QDockWidget* buttonDockWidget;
-	QDockWidget* cryptionArea;
+	unique_ptr<QWidget> buttonWidget;
 
-	QLabel* lblOfEncryptedBox;
-	QLineEdit* encryptedBox;
+	unique_ptr<QDockWidget> buttonDockWidget;
+	unique_ptr<QDockWidget> cryptionArea;
 
-	QTextEdit* textForCryption;
-	QTextEdit* textToDecrypt;
+	unique_ptr<QLabel> lblOfEncryptedBox;
+	unique_ptr<QLineEdit> encryptedBox;
 
-	QPushButton* cryptionButon;
-	QPushButton* cryptionSwitch;
+	unique_ptr<QTextEdit> textForCryption;
+	unique_ptr<QTextEdit> textToDecrypt;
 
-	QMenu* fileMenu;
-	QMenu* editMenu;
-	QAction* closeApplication;
-	QAction* keyEdit;	
+	unique_ptr<QPushButton> cryptionButon;
+	unique_ptr<QPushButton> cryptionSwitch;
 
+	unique_ptr<QMenu> fileMenu;
+	unique_ptr<QMenu> editMenu;
+	unique_ptr<QAction> closeApplication;
+	unique_ptr<QAction> keyEdit;	
+
+	unique_ptr<KeyManagementWindow> kh;
 
 	std::string grabCryptionText();
 
 	int mainWindowHeight{450};
 	int mainWindowWidth{550};
 
-	bool cryptionChoice{};
+	bool cryptionChoice{true};
 };
-
 #endif

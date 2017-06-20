@@ -1,11 +1,5 @@
 #include"Cryption.h"
 
-Cryption::Cryption()
-{ }
-
-Cryption::~Cryption()
-{ }
-
 Cryption::Cryption(const std::string& message)
 { this->message = message; }
 

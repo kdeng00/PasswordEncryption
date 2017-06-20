@@ -9,9 +9,8 @@
 class Decryption : public Cryption
 {
 public:
-
-	Decryption();
-	~Decryption();
+	Decryption() = default;
+	~Decryption() = default;
 	Decryption(const std::string&);
 
 	void setDecryptedMessage(const std::string&);
@@ -21,7 +20,7 @@ public:
 
 private:
 	std::string cstringToString(char[], const int&);
-	std::string decryptedMessage{};
+	std::string decryptedMessage;
 };
 
 #endif

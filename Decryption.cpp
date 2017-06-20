@@ -1,4 +1,5 @@
 #include<iostream>
+#include<fstream>
 #include<sstream>
 #include<ios>
 #include<string>
@@ -6,14 +7,11 @@
 #include"Decryption.h"
 #include"GenerateKeys.h"
 
-Decryption::Decryption()
-{ }
-
-Decryption::~Decryption()
-{ }
-
 Decryption::Decryption(const std::string& message)
-{ this->message = message; }
+{ 
+	this->message = message; 
+	decryptMessage();
+}
 
 
 void Decryption::setDecryptedMessage(const std::string& message)
@@ -22,7 +20,7 @@ void Decryption::setDecryptedMessage(const std::string& message)
 void Decryption::decryptMessage()
 {
 	GenerateKeys gk{};	
-
+	std::fstream ioEvent{};
 	ioEvent.open("encryptedFile.txt", std::ios::in);
 
 	std::string messageToBeDecrypted{}, decryptedMessage{};
@@ -35,10 +33,8 @@ void Decryption::decryptMessage()
 	{
 		char cryptedKey[5]{};
 		for (auto index = 0; index!=5; ++index)
-		{
 			cryptedKey[index] = (messageToBeDecrypted.at(indexOfChar + index));	
 			
-		}
 		decryptedMessage += gk.decryptedCharacters[cstringToString(cryptedKey, 5)];
 	}
 	setDecryptedMessage(decryptedMessage);

@@ -9,17 +9,16 @@
 class Encryption : public Cryption
 {
 public:
-	Encryption();
-	~Encryption();
+	Encryption() = default;
+	~Encryption() = default;
 	Encryption(const std::string&);
 
 	void setEncryptedMessage(const std::string&);
 	void encryptMessage();
 
 	std::string getEncryptedMessage() const;
-
 private:
-	std::string encryptedMessage{};
+	std::string encryptedMessage;
 };
 
 #endif

@@ -9,7 +9,7 @@ class GenerateKeys
 {
 public:
 	GenerateKeys();
-	~GenerateKeys();
+	~GenerateKeys() = default;
 
 	void populateDecryptedValues();
 	void populateEncryptedValues();
@@ -26,6 +26,7 @@ private:
 	void populateNumbers();
 	void populateLetters();
 	void addRange(std::vector<int>&, int, const int);
+	void addToCentralContainer(std::vector<int>&);
 
 	void generateKey(std::string&, const int&);
 	bool isThereRepetition();

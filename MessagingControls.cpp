@@ -2,7 +2,7 @@
 #include<QString>
 #include<QIcon>
 #include<iostream>
-
+#include<memory>
 #include"MessagingControls.h"
 #include"KeyManagementWindow.h"
 #include"Encryption.h"
@@ -10,47 +10,40 @@
 
 MessagingControls::MessagingControls()
 {
-	textForCryption = new QTextEdit;
-	cryptionChoice = true;
-
 	setupMainWindow();
-}
-MessagingControls::~MessagingControls()
-{
-	delete lblOfEncryptedBox;
-	delete cryptionButon;
-	delete textForCryption;
-
 }
 
 
 void MessagingControls::setupMainWindow()
 {
-	cryptionButon = new QPushButton(tr("XO"));
-	cryptionSwitch = new QPushButton(tr("encrypt chosen"));
+	textForCryption = unique_ptr<QTextEdit>{new QTextEdit{}};
+	cryptionButon = unique_ptr<QPushButton>{new QPushButton(tr("XO"))};
+	cryptionSwitch = unique_ptr<QPushButton>{new QPushButton(tr("encrypt chosen"))};
 
-	buttonLayout = new QVBoxLayout;
-	buttonWidget = new QWidget;
-	buttonDockWidget = new QDockWidget;
-	buttonDockWidget->setWindowTitle(tr("Cryption Controls"));
-	buttonLayout->addWidget(cryptionButon);
-	buttonLayout->addWidget(cryptionSwitch);
-	buttonWidget->setLayout(buttonLayout);
-	buttonDockWidget->setWidget(buttonWidget);
-	buttonDockWidget->setFeatures(QDockWidget::NoDockWidgetFeatures);
-	setCentralWidget(buttonDockWidget);
+	buttonLayout = unique_ptr<QVBoxLayout>{new QVBoxLayout};
+	buttonWidget = unique_ptr<QWidget>{new QWidget};
+	buttonDockWidget = unique_ptr<QDockWidget>{new QDockWidget};
+	buttonDockWidget.get()->setWindowTitle(tr("Cryption Controls"));
+	buttonLayout.get()->addWidget(cryptionButon.get());
+	buttonLayout.get()->addWidget(cryptionSwitch.get());
+	buttonWidget.get()->setLayout(buttonLayout.get());
+	buttonDockWidget.get()->setWidget(buttonWidget.get());
+	buttonDockWidget.get()->setFeatures(QDockWidget::NoDockWidgetFeatures);
+	setCentralWidget(buttonDockWidget.get());
 
-	QDockWidget* cryptionArea = new QDockWidget(tr("Cryption"));
-	cryptionArea->setWidget(textForCryption);
-	cryptionArea->setFeatures(QDockWidget::NoDockWidgetFeatures);
-	addDockWidget(Qt::LeftDockWidgetArea, cryptionArea);
+	cryptionArea = unique_ptr<QDockWidget>{new QDockWidget(tr("Cryption"))};
+	cryptionArea.get()->setWidget(textForCryption.get());
+	cryptionArea.get()->setFeatures(QDockWidget::NoDockWidgetFeatures);
+	addDockWidget(Qt::LeftDockWidgetArea, cryptionArea.get());
+
+	addDockWidget(Qt::LeftDockWidgetArea, cryptionArea.get());
 
 	createMenus();
 
-	QObject::connect(closeApplication, SIGNAL(triggered()), this, SLOT(close()));
-	QObject::connect(cryptionSwitch, SIGNAL(clicked()), this, SLOT(changeCryptionType()));
-	QObject::connect(cryptionButon, SIGNAL(clicked()), this, SLOT(determineCryption()));
-	QObject::connect(keyEdit, SIGNAL(triggered()), this, SLOT(keyManagementWindow()));
+	QObject::connect(closeApplication.get(), SIGNAL(triggered()), this, SLOT(close()));
+	QObject::connect(cryptionSwitch.get(), SIGNAL(clicked()), this, SLOT(changeCryptionType()));
+	QObject::connect(cryptionButon.get(), SIGNAL(clicked()), this, SLOT(determineCryption()));
+	QObject::connect(keyEdit.get(), SIGNAL(triggered()), this, SLOT(keyManagementWindow()));
 
 	setWindowTitle("Encryption Decryption Messaging");
 	setFixedHeight(mainWindowHeight);
@@ -58,70 +51,58 @@ void MessagingControls::setupMainWindow()
 }
 void MessagingControls::createMenus()
 {
-	fileMenu = menuBar()->addMenu(tr("File"));
-	editMenu = menuBar()->addMenu(tr("Edit"));
+	fileMenu = unique_ptr<QMenu>{menuBar()->addMenu(tr("File"))};
+	editMenu = unique_ptr<QMenu>{menuBar()->addMenu(tr("Edit"))};
 
-	closeApplication = new QAction(new QObject(nullptr));
-	closeApplication->setText("Exit Application");
+	closeApplication = unique_ptr<QAction>{new QAction(new QObject(nullptr))};
+	closeApplication.get()->setText("Exit Application");
 
-	keyEdit = new QAction(new QObject(nullptr)); 
-	keyEdit->setText("Key Management");
+	keyEdit = unique_ptr<QAction>{new QAction(new QObject(nullptr))};
+	keyEdit.get()->setText("Key Management");
 
-	fileMenu->addAction(closeApplication);
-
-	editMenu->addAction(keyEdit);
+	fileMenu.get()->addAction(closeApplication.get());
+	editMenu.get()->addAction(keyEdit.get());
 }
 
 
 void MessagingControls::changeCryptionType()
 {
-	if (cryptionChoice)
-	{
-		cryptionSwitch->setText("decrypt chosen");
-		cryptionChoice = false;
-	}
-	else
-	{
-		cryptionSwitch->setText("encrypt chosen");
-		cryptionChoice = true;
-	}
+	(cryptionChoice) ? cryptionSwitch->setText("decrypt chosen") : cryptionSwitch->setText("encrypt chosen");
+	cryptionChoice = (cryptionChoice) ? false : true;
 }
 void MessagingControls::determineCryption()
 {
 	if (cryptionChoice)
 	{
 		Encryption ec{grabCryptionText()};
-		ec.encryptMessage();
 
-		textForCryption->clear();
-		textForCryption->setText(QString::fromStdString(ec.getEncryptedMessage()));
+		textForCryption.get()->clear();
+		textForCryption.get()->setText(QString::fromStdString(ec.getEncryptedMessage()));
 
-		cryptionSwitch->setText("decrypt chosen");
+		cryptionSwitch.get()->setText("decrypt chosen");
 		cryptionChoice = false;
 	}
 	else
 	{
 		Decryption dc{grabCryptionText()};
-		dc.decryptMessage();
 
-		textForCryption->clear();
-		textForCryption->setText(QString::fromStdString(dc.getDecryptedMessage()));
+		textForCryption.get()->clear();
+		textForCryption.get()->setText(QString::fromStdString(dc.getDecryptedMessage()));
 
-		cryptionSwitch->setText("encrypt chosen");
+		cryptionSwitch.get()->setText("encrypt chosen");
 		cryptionChoice = true;
 	}
 }
 void MessagingControls::keyManagementWindow()
 {
-	KeyManagementWindow* kh = new KeyManagementWindow;
-	kh->show();
+	kh = unique_ptr<KeyManagementWindow>{new KeyManagementWindow};
+	kh.get()->show();
 }
 
 
 std::string MessagingControls::grabCryptionText()
 {
-	QString placeHolder = textForCryption->toPlainText();
-	std::string message = placeHolder.toStdString();
+	auto placeHolder = textForCryption.get()->toPlainText();
 	
-	return message;
+	return placeHolder.toStdString();
 }	

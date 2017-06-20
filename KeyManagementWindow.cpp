@@ -15,40 +15,32 @@ KeyManagementWindow::KeyManagementWindow(QWidget* parent) : QDialog(parent)
 {
 	GenerateKeys gk{};
 
-	comboBoxOfKeys = new QComboBox{};
-	valueOfKey = new QLineEdit{};
-	generateNewDefaultKeys = new QPushButton(tr("Generate New Default Key"));
+	comboBoxOfKeys = unique_ptr<QComboBox>{new QComboBox{}};
+	valueOfKey = unique_ptr<QLineEdit>{new QLineEdit{}};
+	generateNewDefaultKeys = unique_ptr<QPushButton>{new QPushButton(tr("Generate New Default Key"))};
 
-	vBox = new QVBoxLayout;
-	hBox = new QHBoxLayout;
-	QHBoxLayout* hBox2 = new QHBoxLayout;
+	vBox = unique_ptr<QVBoxLayout>{new QVBoxLayout};
+	hBox = unique_ptr<QHBoxLayout>{new QHBoxLayout};
+	hBox2 = unique_ptr<QHBoxLayout>{new QHBoxLayout};
 
 	setContentsOfComboBox();
-	hBox->addWidget(comboBoxOfKeys);
-	hBox->addWidget(valueOfKey);
+	hBox.get()->addWidget(comboBoxOfKeys.get());
+	hBox.get()->addWidget(valueOfKey.get());
 
-	hBox2->addWidget(generateNewDefaultKeys);
+	hBox2.get()->addWidget(generateNewDefaultKeys.get());
 
-	vBox->addLayout(hBox);
-	vBox->addLayout(hBox2);
+	vBox.get()->addLayout(hBox.get());
+	vBox.get()->addLayout(hBox2.get());
 
-	setLayout(vBox);
+	setLayout(vBox.get());
 
-	setFixedWidth(400);
-	setFixedHeight(400);
+	setFixedWidth(windowWidth);
+	setFixedHeight(windowHeight);
 
 	setWindowTitle("Key Management Window");
 
-	QObject::connect(comboBoxOfKeys, SIGNAL(currentIndexChanged(int)), SLOT(test()));
-	QObject::connect(generateNewDefaultKeys, SIGNAL(clicked()), this, SLOT(generation()));
-}
-KeyManagementWindow::~KeyManagementWindow()
-{ 
-	delete comboBoxOfKeys;
-	delete valueOfKey;
-	delete generateNewDefaultKeys;
-	delete hBox;
-	delete vBox;
+	QObject::connect(comboBoxOfKeys.get(), SIGNAL(currentIndexChanged(int)), SLOT(test()));
+	QObject::connect(generateNewDefaultKeys.get(), SIGNAL(clicked()), this, SLOT(generation()));
 }
 
 
@@ -60,13 +52,13 @@ void KeyManagementWindow::setContentsOfComboBox()
 	{
 		std::string ch{static_cast<char>(gk.allCharacters[index])};
 		QString bl = QString::fromStdString(ch);
-		comboBoxOfKeys->addItem(bl);
+		comboBoxOfKeys.get()->addItem(bl);
 	}
 }
 void KeyManagementWindow::test()
 {
 	GenerateKeys gk{};
-	QString bo{comboBoxOfKeys->currentText()};
+	QString bo{comboBoxOfKeys.get()->currentText()};
 	std::string k{bo.toStdString()};
 	char f{};
 
@@ -76,7 +68,7 @@ void KeyManagementWindow::test()
 
 	std::string value{gk.encryptedCharacters[f]};	
 	QString v{QString::fromStdString(value)};
-	valueOfKey->setText(v);
+	valueOfKey.get()->setText(v);
 }
 void KeyManagementWindow::generation()
 {

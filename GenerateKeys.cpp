@@ -11,18 +11,13 @@ GenerateKeys::GenerateKeys()
 	populateNumbers();
 	populateLetters();
 
-	for (auto index = 0u; index!=symbols.size(); ++index)
-		allCharacters.push_back(symbols[index]);
-	for (auto index = 0u; index!=numbers.size(); ++index)
-		allCharacters.push_back(numbers[index]);
-	for (auto index = 0u; index!=letters.size(); ++index)
-		allCharacters.push_back(letters[index]);
+	addToCentralContainer(symbols);
+	addToCentralContainer(numbers);
+	addToCentralContainer(letters);
 
 	populateDecryptedValues();
 	populateEncryptedValues();
 }
-GenerateKeys::~GenerateKeys()
-{ }
 
 void GenerateKeys::populateDecryptedValues()
 {
@@ -33,7 +28,7 @@ void GenerateKeys::populateDecryptedValues()
 	{
 		readKeys >> tmpKey;
 		decryptedCharacters[tmpKey] = static_cast<char>(allCharacters[index]);
-		tmpKey = "";
+		tmpKey.assign("");
 	}
 	readKeys.close();
 	decryptedCharacters["#2a9u"] = (char) 32;
@@ -48,7 +43,7 @@ void GenerateKeys::populateEncryptedValues()
 	{	
 		readKeys >> tmpKey;
 		encryptedCharacters[decryptedCharacters[tmpKey]] = tmpKey;
-		tmpKey = "";
+		tmpKey.assign("");
 	}
 	readKeys.close();
 	encryptedCharacters[(char) 32] = "#2a9u";
@@ -70,16 +65,19 @@ void GenerateKeys::populateNumbers()
 }
 void GenerateKeys::populateLetters()
 {
+	addRange(letters, 65, 90);
 	addRange(letters, 97, 122);
 }
 void GenerateKeys::addRange(std::vector<int>& ch, int from, const int to)
 {
 	auto range = to - from;
-	for (auto index = 0; index<=range; ++index)
-	{
+	for (auto index = 0; index<=range; ++index, ++from)
 		ch.push_back(from);
-		++from;
-	}
+}
+void GenerateKeys::addToCentralContainer(std::vector<int>& con)
+{
+	for (auto index = 0u; index!=con.size(); ++index)
+		allCharacters.push_back(con[index]);
 }
 void GenerateKeys::generateKey(std::string& key, const int& SIZE)
 {
@@ -127,10 +125,8 @@ bool GenerateKeys::isThereRepetition()
 		std::string chosenOne{keys[index]};
 		auto repetition{0};
 		for (auto innerIndex = 0; innerIndex!=totalCharacters; ++innerIndex)
-		{
 			if (chosenOne == keys[innerIndex])
 				++repetition;
-		}
 		if (repetition > 1)
 		{	
 			std::cout << "Too much repetitive stuff" << std::endl;
