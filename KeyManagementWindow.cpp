@@ -1,5 +1,7 @@
 #include"KeyManagementWindow.h"
+#include"Encryption.h"
 #include"GenerateKeys.h"
+#include"KeyRetrieval.h"
 
 #include<QtWidgets>
 #include<QString>
@@ -13,8 +15,6 @@
 
 KeyManagementWindow::KeyManagementWindow(QWidget* parent) : QDialog(parent)
 {
-	GenerateKeys gk{};
-
 	comboBoxOfKeys = unique_ptr<QComboBox>{new QComboBox{}};
 	valueOfKey = unique_ptr<QLineEdit>{new QLineEdit{}};
 	generateNewDefaultKeys = unique_ptr<QPushButton>{new QPushButton(tr("Generate New Default Key"))};
@@ -46,18 +46,21 @@ KeyManagementWindow::KeyManagementWindow(QWidget* parent) : QDialog(parent)
 
 void KeyManagementWindow::setContentsOfComboBox()
 {
-	GenerateKeys gk;
+	KeyRetrieval kr{};
+	std::vector<int> c{kr.codeCharacterStructure()};
 
-	for (auto index = 0u; index!=gk.allCharacters.size(); ++index)
+	for (auto index = 0u; index!=c.size(); ++index)
 	{
-		std::string ch{static_cast<char>(gk.allCharacters[index])};
+		std::string ch{static_cast<char>(c[index])};
 		QString bl = QString::fromStdString(ch);
 		comboBoxOfKeys.get()->addItem(bl);
 	}
 }
 void KeyManagementWindow::test()
 {
-	GenerateKeys gk{};
+	std::string emp{"d"};
+	Encryption ec{emp};	
+	std::map<char, std::string> encrypted{ec.encryptedCharactersStructure()};
 	QString bo{comboBoxOfKeys.get()->currentText()};
 	std::string k{bo.toStdString()};
 	char f{};
@@ -66,7 +69,7 @@ void KeyManagementWindow::test()
 	lazy << k;
 	lazy >> f;
 
-	std::string value{gk.encryptedCharacters[f]};	
+	std::string value{encrypted[f]};	
 	QString v{QString::fromStdString(value)};
 	valueOfKey.get()->setText(v);
 }

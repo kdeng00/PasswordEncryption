@@ -19,7 +19,6 @@ public:
 	friend class Encryption;
 	friend class Decryption;
 	friend class KeyManagementWindow;
-
 private:
 	
 	void populateSymbols();
@@ -46,8 +45,6 @@ private:
 	std::string defaultKeyFileName{"default_keys.txt"};
 	//KeySize show equal the value in key
 	const int keySize{5};
-	const int totalCharacters{63};
 	char key[5]{};
 };
-
 #endif

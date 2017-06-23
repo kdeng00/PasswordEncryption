@@ -7,6 +7,7 @@
 #include"KeyManagementWindow.h"
 #include"Encryption.h"
 #include"Decryption.h"
+#include"KeyRetrieval.h"
 
 MessagingControls::MessagingControls()
 {

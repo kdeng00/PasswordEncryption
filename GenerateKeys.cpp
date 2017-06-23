@@ -31,8 +31,6 @@ void GenerateKeys::populateDecryptedValues()
 		tmpKey.assign("");
 	}
 	readKeys.close();
-	decryptedCharacters["#2a9u"] = (char) 32;
-	decryptedCharacters["6*dw4"] = (char) 10;
 }
 void GenerateKeys::populateEncryptedValues()
 {
@@ -46,17 +44,14 @@ void GenerateKeys::populateEncryptedValues()
 		tmpKey.assign("");
 	}
 	readKeys.close();
-	encryptedCharacters[(char) 32] = "#2a9u";
-	encryptedCharacters[(char) 10] = "6*dw4";
 }
 
 void GenerateKeys::populateSymbols()
 {
-	symbols.push_back(33);
-	addRange(symbols, 35, 38);
-	addRange(symbols, 40, 46);
+	addRange(symbols, 10, 10);
+	addRange(symbols, 32, 47);
 	addRange(symbols, 58, 64);
-	addRange(symbols, 93, 96);
+	addRange(symbols, 91, 96);
 	addRange(symbols, 123, 126);
 }
 void GenerateKeys::populateNumbers()
@@ -94,15 +89,15 @@ void GenerateKeys::generateKey(std::string& key, const int& SIZE)
 	std::stringstream charToString;
 	for (auto index = 0; index!=SIZE; ++index)
 		charToString << ky[index];
-	while (charToString>>key)
-		charToString >> key;
+	while (charToString>>key);
 }
 void GenerateKeys::keyMove()
 {
-	for (auto index = 0; index!=totalCharacters; ++index)
+	for (auto index = 0; index!=allCharacters.size(); ++index)
 	{
 		std::string tmpKey{};	
 		generateKey(tmpKey, keySize);
+		std::cout << "Generated Key: " << tmpKey << std::endl;
 		keys.push_back(tmpKey);
 	}
 	if (isThereRepetition())
@@ -120,11 +115,11 @@ void GenerateKeys::print(const std::vector<int>& ch)
 }
 bool GenerateKeys::isThereRepetition()
 {
-	for (auto index = 0; index!=totalCharacters; ++index)
+	for (auto index = 0; index!=allCharacters.size(); ++index)
 	{
 		std::string chosenOne{keys[index]};
 		auto repetition{0};
-		for (auto innerIndex = 0; innerIndex!=totalCharacters; ++innerIndex)
+		for (auto innerIndex = 0; innerIndex!=allCharacters.size(); ++innerIndex)
 			if (chosenOne == keys[innerIndex])
 				++repetition;
 		if (repetition > 1)
@@ -147,6 +142,9 @@ void GenerateKeys::keyDump()
 
 char GenerateKeys::getChar(std::vector<int>& ch)
 {
-	auto hc = ch[rand() % ch.size()];
+	char hc = ch[rand() % ch.size()];
+	while (hc==32 || hc==10)
+		hc = getChar(ch);
+
 	return hc;
 }

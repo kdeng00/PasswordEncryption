@@ -10,9 +10,8 @@ public:
 	~Cryption() = default;
 	Cryption(const std::string&);
 
-	std::string getMessage() const;
-protected:
-	void setMessage(const std::string&);
+	virtual void setMessage(const std::string&) = 0;
+	virtual std::string getMessage() const = 0;
 
 	std::string message;
 };

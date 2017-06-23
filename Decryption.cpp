@@ -2,30 +2,32 @@
 #include<fstream>
 #include<sstream>
 #include<ios>
-#include<string>
+#include<vector>
 
 #include"Decryption.h"
-#include"GenerateKeys.h"
+#include"KeyRetrieval.h"
 
 Decryption::Decryption(const std::string& message)
 { 
 	this->message = message; 
+	setupMap();
 	decryptMessage();
 }
 
 
 void Decryption::setDecryptedMessage(const std::string& message)
 { this->decryptedMessage = message; }	
+void Decryption::setMessage(const std::string& message)
+{ this->message = message; }
 
 void Decryption::decryptMessage()
 {
-	GenerateKeys gk{};	
 	std::fstream ioEvent{};
 	ioEvent.open("encryptedFile.txt", std::ios::in);
 
 	std::string messageToBeDecrypted{}, decryptedMessage{};
 
-	while(ioEvent >> messageToBeDecrypted)
+	while(ioEvent >> messageToBeDecrypted);
 
 	ioEvent.close();
 
@@ -35,7 +37,7 @@ void Decryption::decryptMessage()
 		for (auto index = 0; index!=5; ++index)
 			cryptedKey[index] = (messageToBeDecrypted.at(indexOfChar + index));	
 			
-		decryptedMessage += gk.decryptedCharacters[cstringToString(cryptedKey, 5)];
+		decryptedMessage += decryptedCharacters[cstringToString(cryptedKey, 5)];
 	}
 	setDecryptedMessage(decryptedMessage);
 }
@@ -43,7 +45,18 @@ void Decryption::decryptMessage()
 
 std::string Decryption::getDecryptedMessage() const
 { return decryptedMessage; }	
+std::string Decryption::getMessage() const
+{ return message; }
 
+void Decryption::setupMap()
+{
+	KeyRetrieval kr{};
+	std::vector<std::string> k{kr.keyStructure()};
+	std::vector<int> c{kr.codeCharacterStructure()};
+
+	for (auto index = 0; index!=c.size(); ++index)
+		decryptedCharacters[k[index]] = c[index];
+}
 std::string Decryption::cstringToString(char tmp[], const int& SIZE)
 {
 	std::string tmpString{};
