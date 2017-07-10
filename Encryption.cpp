@@ -2,7 +2,6 @@
 #include<iostream>
 #include<fstream>
 #include<string>
-
 #include"Encryption.h"
 #include"GenerateKeys.h"
 #include"KeyRetrieval.h"
@@ -16,10 +15,8 @@ Encryption::Encryption(const std::string& message)
 }
 
 
-void Encryption::setEncryptedMessage(const std::string& encryptedMessage)
-{ this->encryptedMessage = encryptedMessage; }
-void Encryption::setMessage(const std::string& message)
-{ this->message = message; }
+void Encryption::setEncryptedMessage(const std::string& encryptedMessage) { this->encryptedMessage = encryptedMessage; }
+void Encryption::setMessage(const std::string& message) { this->message = message; }
 void Encryption::encryptMessage()
 {
 	std::fstream ioEvent{};
@@ -41,11 +38,9 @@ void Encryption::setupMap()
 	std::vector<std::string> k{kr.keyStructure()};
 	std::vector<int> c{kr.codeCharacterStructure()};
 
-	for (auto index = 0; index!=k.size(); ++index)
+	for (auto index = 0u; index!=k.size(); ++index)
 		encryptedCharacters[c[index]] = k[index];
 }
-std::string Encryption::getEncryptedMessage() const
-{ return encryptedMessage; }
-std::string Encryption::getMessage() const
-{ return message; }
+std::string Encryption::getEncryptedMessage() const { return encryptedMessage; }
+std::string Encryption::getMessage() const { return message; }
 std::map<char, std::string> Encryption::encryptedCharactersStructure() { return encryptedCharacters; }

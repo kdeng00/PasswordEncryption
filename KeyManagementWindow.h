@@ -35,8 +35,8 @@ private:
 	unique_ptr<QComboBox> comboBoxOfKeys;
 	unique_ptr<QLineEdit> valueOfKey;
 	unique_ptr<QPushButton> generateNewDefaultKeys;
-	int windowWidth{400};
-	int windowHeight{400};
+	const int windowWidth{400};
+	const int windowHeight{400};
 };
 
 #endif

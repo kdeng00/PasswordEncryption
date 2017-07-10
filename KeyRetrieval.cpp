@@ -18,9 +18,7 @@ void KeyRetrieval::retrieveKey()
 	{
 		readKeys.getline(keyChar, '\n');
 		if (keyChar[0]!='\0')
-		{
 			keys.push_back(keyChar);
-		}	
 	}
 }
 void KeyRetrieval::addToList()
@@ -42,11 +40,5 @@ void KeyRetrieval::addRange(int from, const int to)
 		codeCharacter.push_back(from);
 }
 
-std::vector<std::string> KeyRetrieval::keyStructure()
-{
-	return keys;
-}
-std::vector<int> KeyRetrieval::codeCharacterStructure()
-{
-	return codeCharacter;
-}
+std::vector<std::string> KeyRetrieval::keyStructure() { return keys; }
+std::vector<int> KeyRetrieval::codeCharacterStructure() { return codeCharacter; }

@@ -1,7 +1,6 @@
 #ifndef DECRYPTION_H
 #define DECRYPTION_H
 
-#include<fstream>
 #include<string>
 #include<map>
 #include"Cryption.h"
@@ -21,9 +20,9 @@ public:
 	std::string getMessage() const override;
 private:
 	void setupMap();
-	std::string cstringToString(char[], const int&);
 	std::string decryptedMessage;
 	std::map<std::string, char> decryptedCharacters;
+	const int keyLength{5};
 };
 
 #endif

@@ -1,8 +1,3 @@
-#include"KeyManagementWindow.h"
-#include"Encryption.h"
-#include"GenerateKeys.h"
-#include"KeyRetrieval.h"
-
 #include<QtWidgets>
 #include<QString>
 #include<QWidget>
@@ -12,6 +7,10 @@
 #include<cstdlib>
 #include<fstream>
 #include<ios>
+#include"KeyManagementWindow.h"
+#include"Encryption.h"
+#include"GenerateKeys.h"
+#include"KeyRetrieval.h"
 
 KeyManagementWindow::KeyManagementWindow(QWidget* parent) : QDialog(parent)
 {

@@ -22,6 +22,6 @@ private:
 	std::vector<std::string> keys;
 	std::vector<char> characters;
 	std::vector<int> codeCharacter;
-	int keySize{5};
+	const int keySize{5};
 };
 #endif

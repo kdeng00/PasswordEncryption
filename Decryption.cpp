@@ -3,7 +3,7 @@
 #include<sstream>
 #include<ios>
 #include<vector>
-
+#include"Conversions.h"
 #include"Decryption.h"
 #include"KeyRetrieval.h"
 
@@ -15,10 +15,8 @@ Decryption::Decryption(const std::string& message)
 }
 
 
-void Decryption::setDecryptedMessage(const std::string& message)
-{ this->decryptedMessage = message; }	
-void Decryption::setMessage(const std::string& message)
-{ this->message = message; }
+void Decryption::setDecryptedMessage(const std::string& message) { this->decryptedMessage = message; }	
+void Decryption::setMessage(const std::string& message) { this->message = message; }
 
 void Decryption::decryptMessage()
 {
@@ -34,19 +32,17 @@ void Decryption::decryptMessage()
 	for (auto indexOfChar = 0u; indexOfChar<messageToBeDecrypted.size(); indexOfChar+=5)
 	{
 		char cryptedKey[5]{};
-		for (auto index = 0; index!=5; ++index)
+		for (auto index = 0; index!=keyLength; ++index)
 			cryptedKey[index] = (messageToBeDecrypted.at(indexOfChar + index));	
-			
-		decryptedMessage += decryptedCharacters[cstringToString(cryptedKey, 5)];
+		Conversions cnvert;			
+		decryptedMessage += decryptedCharacters[cnvert.cstringToString(cryptedKey, 5)];
 	}
 	setDecryptedMessage(decryptedMessage);
 }
 
 
-std::string Decryption::getDecryptedMessage() const
-{ return decryptedMessage; }	
-std::string Decryption::getMessage() const
-{ return message; }
+std::string Decryption::getDecryptedMessage() const { return decryptedMessage; }	
+std::string Decryption::getMessage() const { return message; }
 
 void Decryption::setupMap()
 {
@@ -54,15 +50,6 @@ void Decryption::setupMap()
 	std::vector<std::string> k{kr.keyStructure()};
 	std::vector<int> c{kr.codeCharacterStructure()};
 
-	for (auto index = 0; index!=c.size(); ++index)
+	for (auto index = 0u; index!=c.size(); ++index)
 		decryptedCharacters[k[index]] = c[index];
-}
-std::string Decryption::cstringToString(char tmp[], const int& SIZE)
-{
-	std::string tmpString{};
-	std::stringstream cToS{};	
-	for (auto index = 0; index!=SIZE; ++index)
-		cToS << tmp[index];	
-	cToS >> tmpString;
-	return tmpString;
 }

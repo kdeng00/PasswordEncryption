@@ -2,7 +2,6 @@
 #include<sstream>
 #include<fstream>
 #include<ios>
-
 #include"GenerateKeys.h"
 
 GenerateKeys::GenerateKeys()
@@ -93,7 +92,7 @@ void GenerateKeys::generateKey(std::string& key, const int& SIZE)
 }
 void GenerateKeys::keyMove()
 {
-	for (auto index = 0; index!=allCharacters.size(); ++index)
+	for (auto index = 0u; index!=allCharacters.size(); ++index)
 	{
 		std::string tmpKey{};	
 		generateKey(tmpKey, keySize);
@@ -115,11 +114,11 @@ void GenerateKeys::print(const std::vector<int>& ch)
 }
 bool GenerateKeys::isThereRepetition()
 {
-	for (auto index = 0; index!=allCharacters.size(); ++index)
+	for (auto index = 0u; index!=allCharacters.size(); ++index)
 	{
 		std::string chosenOne{keys[index]};
 		auto repetition{0};
-		for (auto innerIndex = 0; innerIndex!=allCharacters.size(); ++innerIndex)
+		for (auto innerIndex = 0u; innerIndex!=allCharacters.size(); ++innerIndex)
 			if (chosenOne == keys[innerIndex])
 				++repetition;
 		if (repetition > 1)

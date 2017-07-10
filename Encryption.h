@@ -1,7 +1,6 @@
 #ifndef ENCRYPTION_H
 #define ENCRYPTION_H
 
-#include<fstream>
 #include<string>
 #include<map>
 #include"Cryption.h"
@@ -25,5 +24,4 @@ private:
 	std::string encryptedMessage;
 	std::map<char, std::string> encryptedCharacters;
 };
-
 #endif
