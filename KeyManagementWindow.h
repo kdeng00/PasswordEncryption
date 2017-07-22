@@ -28,6 +28,7 @@ public:
 private slots:	
 	void test();
 	void generation();
+	void exitApplication();
 private:	
 	unique_ptr<QHBoxLayout> hBox;
 	unique_ptr<QHBoxLayout> hBox2;
@@ -35,6 +36,7 @@ private:
 	unique_ptr<QComboBox> comboBoxOfKeys;
 	unique_ptr<QLineEdit> valueOfKey;
 	unique_ptr<QPushButton> generateNewDefaultKeys;
+	unique_ptr<QPushButton> closeButton;
 	const int windowWidth{400};
 	const int windowHeight{400};
 };

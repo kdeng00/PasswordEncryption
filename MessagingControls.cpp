@@ -1,22 +1,21 @@
-#include<QtGui>
 #include<QString>
 #include<QIcon>
-#include<iostream>
-#include<memory>
 #include"MessagingControls.h"
-#include"KeyManagementWindow.h"
 #include"Encryption.h"
 #include"Decryption.h"
 #include"KeyRetrieval.h"
 
 MessagingControls::MessagingControls()
 {
+	mainWindowWidth = 450;
+	mainWindowHeight = 450;
 	setupMainWindow();
 }
 
 
 void MessagingControls::setupMainWindow()
 {
+	kh = unique_ptr<KeyManagementWindow>{new KeyManagementWindow};
 	textForCryption = unique_ptr<QTextEdit>{new QTextEdit{}};
 	cryptionButon = unique_ptr<QPushButton>{new QPushButton(tr("XO"))};
 	cryptionSwitch = unique_ptr<QPushButton>{new QPushButton(tr("encrypt chosen"))};
@@ -41,7 +40,7 @@ void MessagingControls::setupMainWindow()
 
 	createMenus();
 
-	QObject::connect(closeApplication.get(), SIGNAL(triggered()), this, SLOT(close()));
+	QObject::connect(closeApplication.get(), SIGNAL(triggered()), this, SLOT(exitApplication()));
 	QObject::connect(cryptionSwitch.get(), SIGNAL(clicked()), this, SLOT(changeCryptionType()));
 	QObject::connect(cryptionButon.get(), SIGNAL(clicked()), this, SLOT(determineCryption()));
 	QObject::connect(keyEdit.get(), SIGNAL(triggered()), this, SLOT(keyManagementWindow()));
@@ -94,11 +93,8 @@ void MessagingControls::determineCryption()
 		cryptionChoice = true;
 	}
 }
-void MessagingControls::keyManagementWindow()
-{
-	kh = unique_ptr<KeyManagementWindow>{new KeyManagementWindow};
-	kh.get()->show();
-}
+void MessagingControls::keyManagementWindow() { kh.get()->show(); }
+void MessagingControls::exitApplication() { exit(0); }
 
 
 std::string MessagingControls::grabCryptionText()

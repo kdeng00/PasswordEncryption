@@ -3,7 +3,6 @@
 #include<QWidget>
 #include<string>
 #include<sstream>
-#include<iostream>
 #include<cstdlib>
 #include<fstream>
 #include<ios>
@@ -17,6 +16,7 @@ KeyManagementWindow::KeyManagementWindow(QWidget* parent) : QDialog(parent)
 	comboBoxOfKeys = unique_ptr<QComboBox>{new QComboBox{}};
 	valueOfKey = unique_ptr<QLineEdit>{new QLineEdit{}};
 	generateNewDefaultKeys = unique_ptr<QPushButton>{new QPushButton(tr("Generate New Default Key"))};
+	closeButton = unique_ptr<QPushButton>{new QPushButton(tr("close"))};
 
 	vBox = unique_ptr<QVBoxLayout>{new QVBoxLayout};
 	hBox = unique_ptr<QHBoxLayout>{new QHBoxLayout};
@@ -27,6 +27,7 @@ KeyManagementWindow::KeyManagementWindow(QWidget* parent) : QDialog(parent)
 	hBox.get()->addWidget(valueOfKey.get());
 
 	hBox2.get()->addWidget(generateNewDefaultKeys.get());
+	hBox2.get()->addWidget(closeButton.get());
 
 	vBox.get()->addLayout(hBox.get());
 	vBox.get()->addLayout(hBox2.get());
@@ -40,6 +41,7 @@ KeyManagementWindow::KeyManagementWindow(QWidget* parent) : QDialog(parent)
 
 	QObject::connect(comboBoxOfKeys.get(), SIGNAL(currentIndexChanged(int)), SLOT(test()));
 	QObject::connect(generateNewDefaultKeys.get(), SIGNAL(clicked()), this, SLOT(generation()));
+	QObject::connect(closeButton.get(), SIGNAL(clicked()), this, SLOT(exitApplication()));
 }
 
 
@@ -77,4 +79,8 @@ void KeyManagementWindow::generation()
 	GenerateKeys gk{};
 	gk.keyMove();
 	gk.keyDump();
+}
+void KeyManagementWindow::exitApplication()
+{
+	this->hide();
 }

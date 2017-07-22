@@ -13,19 +13,9 @@
 #include<QVBoxLayout>
 #include<QDockWidget>
 #include<QWidget>
-#include<QString>
 #include<memory>
 #include"KeyManagementWindow.h"
 
-class QLabel;
-class QLineEdit;
-class QTextEdit;
-class QPushButton;
-class QMenuBar;
-class QMainWindow;
-class QMenu;
-class QAction;
-class QString;
 
 using std::unique_ptr;
 
@@ -41,6 +31,7 @@ private slots:
 	void changeCryptionType();
 	void determineCryption();
 	void keyManagementWindow();
+	void exitApplication();
 private:	
 	void setupMainWindow();
 	void createMenus();
@@ -70,9 +61,9 @@ private:
 
 	std::string grabCryptionText();
 
-	int mainWindowHeight{450};
-	int mainWindowWidth{550};
+	int mainWindowHeight;
+	int mainWindowWidth;
 
-	bool cryptionChoice{true};
+	bool cryptionChoice;
 };
 #endif
