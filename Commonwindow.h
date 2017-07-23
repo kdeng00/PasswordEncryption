@@ -20,5 +20,6 @@ protected:
 	unique_ptr<QHBoxLayout> mainLayout;
 	unique_ptr<VBoxLayout> subLayoutOne;
 	unique_ptr<VBoxLayout> subLayoutTwo;
+	int height, width;
 };
 #endif
