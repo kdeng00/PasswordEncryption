@@ -1,11 +1,11 @@
 #include<QApplication>
 
-#include"MessagingControls.h"
+#include"MainWindow.h"
 
 int main(int argc, char* argv[])
 {
 	QApplication app(argc, argv);
-	MessagingControls stuff{};
+	MainWindow stuff{};
 
 	stuff.show();
 

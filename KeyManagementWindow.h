@@ -8,16 +8,10 @@
 #include<QLineEdit>
 #include<QPushButton>
 #include<memory>
+#include"CommonWindow.h"
+#include"ViewingWindow.h"
 
-class QHBoxLayout;
-class QVBoxLayout;
-class QComboBox;
-class QLineEdit;
-class QPushButton;
-
-using std::unique_ptr;
-
-class KeyManagementWindow : public QDialog
+class KeyManagementWindow : public QDialog, public CommonWindow, public ViewingWindow
 {
 	Q_OBJECT
 public:
@@ -30,15 +24,6 @@ private slots:
 	void generation();
 	void exitApplication();
 private:	
-	unique_ptr<QHBoxLayout> hBox;
-	unique_ptr<QHBoxLayout> hBox2;
-	unique_ptr<QVBoxLayout> vBox;
-	unique_ptr<QComboBox> comboBoxOfKeys;
-	unique_ptr<QLineEdit> valueOfKey;
-	unique_ptr<QPushButton> generateNewDefaultKeys;
-	unique_ptr<QPushButton> closeButton;
-	const int windowWidth{400};
-	const int windowHeight{400};
 };
 
 #endif

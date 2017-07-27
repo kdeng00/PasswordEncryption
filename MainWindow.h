@@ -1,9 +1,8 @@
-#ifndef MESSAGINGCONTROLS_H
-#define MESSAGINGCONTROLS_H
+#ifndef MAINWINDOW_H_
+#define MAINWINDOW_H_
 
 #include<QDialog>
 #include<QPushButton>
-#include<QLineEdit>
 #include<QTextEdit>
 #include<QLabel>
 #include<QMenuBar>
@@ -15,16 +14,15 @@
 #include<QWidget>
 #include<memory>
 #include"KeyManagementWindow.h"
+#include"CommonWindow.h"
 
 
-using std::unique_ptr;
-
-class MessagingControls : public QMainWindow
+class MainWindow : public QMainWindow, public CommonWindow
 {
 	Q_OBJECT
 public:
-	MessagingControls();
-	~MessagingControls() = default;
+	MainWindow();
+	~MainWindow() = default;
 signals:
 
 private slots:
@@ -44,10 +42,8 @@ private:
 	unique_ptr<QDockWidget> cryptionArea;
 
 	unique_ptr<QLabel> lblOfEncryptedBox;
-	unique_ptr<QLineEdit> encryptedBox;
 
 	unique_ptr<QTextEdit> textForCryption;
-	unique_ptr<QTextEdit> textToDecrypt;
 
 	unique_ptr<QPushButton> cryptionButon;
 	unique_ptr<QPushButton> cryptionSwitch;
@@ -60,9 +56,6 @@ private:
 	unique_ptr<KeyManagementWindow> kh;
 
 	std::string grabCryptionText();
-
-	int mainWindowHeight;
-	int mainWindowWidth;
 
 	bool cryptionChoice;
 };

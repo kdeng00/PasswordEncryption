@@ -18,8 +18,8 @@ protected:
 	unique_ptr<QComboBox> selectionBox;
 	unique_ptr<QPushButton> actionButton;
 	unique_ptr<QHBoxLayout> mainLayout;
-	unique_ptr<VBoxLayout> subLayoutOne;
-	unique_ptr<VBoxLayout> subLayoutTwo;
-	int height, width;
+	unique_ptr<QVBoxLayout> subLayoutOne;
+	unique_ptr<QVBoxLayout> subLayoutTwo;
+	int windowHeight, windowWidth;
 };
 #endif

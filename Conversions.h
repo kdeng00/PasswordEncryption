@@ -8,8 +8,10 @@ class Conversions
 {
 public:
 	Conversions() = default;
+	~Conversions()=default;
 
 	std::string cstringToString(char[], const int);
+	//char stringToChar(const string&);
 private:
 };
 
@@ -22,4 +24,15 @@ std::string Conversions::cstringToString(char tmp[], const int size)
 	cToS >> tmpString;
 	return tmpString;
 }
+/**
+char Conversions::stringToChar(const string& tmp)
+{
+	char tmpChar{};
+	stringstream sToC{};
+	for (auto index=0; index!=tmp.size(); ++index)
+		sToC << tmpChar;
+	sToC >> tmpChar;
+	return tmpChar;
+}
+*/
 #endif
