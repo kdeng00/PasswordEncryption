@@ -14,6 +14,7 @@
 #include<QWidget>
 #include<memory>
 #include"KeyManagementWindow.h"
+#include"PasswordManagementWindow.h"
 #include"CommonWindow.h"
 
 
@@ -29,10 +30,12 @@ private slots:
 	void changeCryptionType();
 	void determineCryption();
 	void keyManagementWindow();
+	void passwordManageWindow();
 	void exitApplication();
 private:	
 	void setupMainWindow();
 	void createMenus();
+	void connections();
 
 	unique_ptr<QVBoxLayout> buttonLayout;
 
@@ -52,8 +55,10 @@ private:
 	unique_ptr<QMenu> editMenu;
 	unique_ptr<QAction> closeApplication;
 	unique_ptr<QAction> keyEdit;	
+	unique_ptr<QAction> passwordManage;
 
 	unique_ptr<KeyManagementWindow> kh;
+	unique_ptr<PasswordManagementWindow> ph;
 
 	std::string grabCryptionText();
 

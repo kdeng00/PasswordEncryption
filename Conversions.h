@@ -10,29 +10,30 @@ public:
 	Conversions() = default;
 	~Conversions()=default;
 
-	std::string cstringToString(char[], const int);
-	//char stringToChar(const string&);
+	template<typename C=char,typename S=std::string>
+	S cstringToString(const C[], const int);
+	template<typename C=char,typename S=std::string>
+	C stringToChar(const S&);
 private:
 };
-
-std::string Conversions::cstringToString(char tmp[], const int size)
+template<typename C=char,typename S=std::string>
+S Conversions::cstringToString(const C tmp[], const int size)
 {
-	std::string tmpString{};
 	std::stringstream cToS{};
-	for (auto index =0; index!=size; ++ index)
-		cToS << tmp[index];
-	cToS >> tmpString;
+	for (auto index=0; index!=size; ++index)
+		cToS<<tmp[index];
+	std::string tmpString{};
+	cToS>>tmpString;
 	return tmpString;
 }
-/**
-char Conversions::stringToChar(const string& tmp)
+template<typename C=char,typename S=std::string>
+C Conversions::stringToChar(const S& tmp)
 {
+	std::stringstream sToC{};
+	for (auto tmpElements:tmp)
+		sToC<<tmpElements;
 	char tmpChar{};
-	stringstream sToC{};
-	for (auto index=0; index!=tmp.size(); ++index)
-		sToC << tmpChar;
-	sToC >> tmpChar;
+	sToC>>tmpChar;
 	return tmpChar;
 }
-*/
 #endif

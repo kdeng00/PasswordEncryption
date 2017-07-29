@@ -6,15 +6,16 @@
 
 MainWindow::MainWindow()
 {
-	windowHeight = 450;
-	windowWidth = 450;
+	kh = unique_ptr<KeyManagementWindow>{new KeyManagementWindow};
+	ph = unique_ptr<PasswordManagementWindow>{new PasswordManagementWindow};
 	setupMainWindow();
 }
 
 
 void MainWindow::setupMainWindow()
 {
-	kh = unique_ptr<KeyManagementWindow>{new KeyManagementWindow};
+	windowHeight = 450;
+	windowWidth = 450;
 	textForCryption = unique_ptr<QTextEdit>{new QTextEdit{}};
 	actionButton = unique_ptr<QPushButton>{new QPushButton(tr("encrypt"))};
 	selectionBox = unique_ptr<QComboBox>{new QComboBox{}};
@@ -37,12 +38,10 @@ void MainWindow::setupMainWindow()
 
 	createMenus();
 
-	QObject::connect(closeApplication.get(), SIGNAL(triggered()), this, SLOT(exitApplication()));
-	QObject::connect(keyEdit.get(), SIGNAL(triggered()), this, SLOT(keyManagementWindow()));
-
 	setWindowTitle("Encryption Decryption Messaging");
 	setFixedHeight(windowHeight);
 	setFixedWidth(windowWidth);
+	connections();
 }
 void MainWindow::createMenus()
 {
@@ -54,9 +53,18 @@ void MainWindow::createMenus()
 
 	keyEdit = unique_ptr<QAction>{new QAction(new QObject(nullptr))};
 	keyEdit.get()->setText("Key Management");
+	passwordManage = unique_ptr<QAction>{new QAction{new QObject{nullptr}}};
+	passwordManage.get()->setText("PasswordManagement");
 
 	fileMenu.get()->addAction(closeApplication.get());
 	editMenu.get()->addAction(keyEdit.get());
+	editMenu.get()->addAction(passwordManage.get());
+}
+void MainWindow::connections()
+{
+	QObject::connect(closeApplication.get(), SIGNAL(triggered()), this, SLOT(exitApplication()));
+	QObject::connect(keyEdit.get(), SIGNAL(triggered()), this, SLOT(keyManagementWindow()));
+	QObject::connect(passwordManage.get(), SIGNAL(triggered()), this, SLOT(passwordManageWindow()));
 }
 
 
@@ -89,6 +97,7 @@ void MainWindow::determineCryption()
 	}
 }
 void MainWindow::keyManagementWindow() { kh.get()->show(); }
+void MainWindow::passwordManageWindow() { ph.get()->show(); }
 void MainWindow::exitApplication() { exit(0); }
 
 

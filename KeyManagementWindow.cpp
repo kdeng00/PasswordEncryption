@@ -13,6 +13,25 @@
 
 KeyManagementWindow::KeyManagementWindow(QWidget* parent) : QDialog(parent)
 {
+	setupWindow();
+	connections();
+}
+
+
+void KeyManagementWindow::setContentsOfComboBox()
+{
+	KeyRetrieval kr{};
+	std::vector<int> c{kr.codeCharacterStructure()};
+
+	for (auto index = 0u; index!=c.size(); ++index)
+	{
+		std::string ch{static_cast<char>(c[index])};
+		QString bl = QString::fromStdString(ch);
+		selectionBox.get()->addItem(bl);
+	}
+}
+void KeyManagementWindow::setupWindow()
+{
 	windowWidth = 450;
 	windowHeight = 450;
 
@@ -54,24 +73,12 @@ KeyManagementWindow::KeyManagementWindow(QWidget* parent) : QDialog(parent)
 	setFixedHeight(windowHeight);
 
 	setWindowTitle("Key Management Window");
-
+}
+void KeyManagementWindow::connections()
+{
 	QObject::connect(selectionBox.get(), SIGNAL(currentIndexChanged(int)), SLOT(test()));
 	QObject::connect(generateNewKeys.get(), SIGNAL(clicked()), this, SLOT(generation()));
 	QObject::connect(closeButton.get(), SIGNAL(clicked()), this, SLOT(exitApplication()));
-}
-
-
-void KeyManagementWindow::setContentsOfComboBox()
-{
-	KeyRetrieval kr{};
-	std::vector<int> c{kr.codeCharacterStructure()};
-
-	for (auto index = 0u; index!=c.size(); ++index)
-	{
-		std::string ch{static_cast<char>(c[index])};
-		QString bl = QString::fromStdString(ch);
-		selectionBox.get()->addItem(bl);
-	}
 }
 void KeyManagementWindow::test()
 {
