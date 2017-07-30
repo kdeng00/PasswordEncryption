@@ -15,6 +15,7 @@ public:
 	CommonWindow() = default;
 	~CommonWindow() = default;
 protected:
+	virtual void connections()=0;
 	unique_ptr<QComboBox> selectionBox;
 	unique_ptr<QPushButton> actionButton;
 	unique_ptr<QHBoxLayout> mainLayout;

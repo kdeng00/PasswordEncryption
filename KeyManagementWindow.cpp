@@ -103,7 +103,4 @@ void KeyManagementWindow::generation()
 	gk.keyMove();
 	gk.keyDump();
 }
-void KeyManagementWindow::exitApplication()
-{
-	this->hide();
-}
+void KeyManagementWindow::exitApplication() { this->hide(); }

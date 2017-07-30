@@ -18,5 +18,6 @@ private:
 
 	unique_ptr<QLineEdit> passwordField;
 private slots:
+	void exitApplication();
 };
 #endif
