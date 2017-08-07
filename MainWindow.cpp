@@ -1,3 +1,4 @@
+#include<iostream>
 #include<QString>
 #include"MainWindow.h"
 #include"Encryption.h"
@@ -41,6 +42,7 @@ void MainWindow::setupMainWindow()
 	setWindowTitle("Encryption Decryption Messaging");
 	setFixedHeight(windowHeight);
 	setFixedWidth(windowWidth);
+	actionButton.get()->setEnabled(false);
 	connections();
 }
 void MainWindow::createMenus()
@@ -65,6 +67,7 @@ void MainWindow::connections()
 	QObject::connect(closeApplication.get(), SIGNAL(triggered()), this, SLOT(exitApplication()));
 	QObject::connect(keyEdit.get(), SIGNAL(triggered()), this, SLOT(keyManagementWindow()));
 	QObject::connect(passwordManage.get(), SIGNAL(triggered()), this, SLOT(passwordManageWindow()));
+	QObject::connect(actionButton.get(), SIGNAL(clicked()), this, SLOT(test()));
 }
 
 
@@ -107,3 +110,4 @@ std::string MainWindow::grabCryptionText()
 	
 	return placeHolder.toStdString();
 }	
+void MainWindow::test() { std::cout<<"Action button Works"<<std::endl; }

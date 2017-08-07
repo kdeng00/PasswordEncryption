@@ -1,11 +1,16 @@
 #include<iostream>
+#include<cstdlib>
+#include<ctime>
 #include<sstream>
 #include<fstream>
 #include<ios>
+#include<ctime>
 #include"GenerateKeys.h"
+#include"FolderStructure.h"
 
 GenerateKeys::GenerateKeys()
 {
+	srand(time(0));
 	populateSymbols();
 	populateNumbers();
 	populateLetters();
@@ -14,8 +19,10 @@ GenerateKeys::GenerateKeys()
 	addToCentralContainer(numbers);
 	addToCentralContainer(letters);
 
-	populateDecryptedValues();
-	populateEncryptedValues();
+	generatedFileName();
+
+	//populateDecryptedValues();
+	//populateEncryptedValues();
 }
 
 void GenerateKeys::populateDecryptedValues()
@@ -45,6 +52,51 @@ void GenerateKeys::populateEncryptedValues()
 	readKeys.close();
 }
 
+void GenerateKeys::generatedFileName()
+{
+	time_t epochTime = time(0);
+	tm* currentTime = localtime(&epochTime);
+
+	auto year = 1900+currentTime->tm_year;
+	auto month = 1+currentTime->tm_mon;
+	auto dayOfmonth = currentTime->tm_mday;
+
+	if (month<10 && dayOfmonth<10)
+	{
+		defaultKeyFileName.assign(std::to_string(year));
+		defaultKeyFileName.append("0"+std::to_string(month));
+		defaultKeyFileName.append("0"+std::to_string(dayOfmonth));
+	}	
+	else if (month<10 && dayOfmonth>=10)
+	{
+		defaultKeyFileName.assign(std::to_string(year));
+		defaultKeyFileName.append("0"+std::to_string(month));
+		defaultKeyFileName.append(std::to_string(dayOfmonth));
+	}
+	else if (month>=10 && dayOfmonth<10)
+	{
+		defaultKeyFileName.assign(std::to_string(year));
+		defaultKeyFileName.append(std::to_string(month));
+		defaultKeyFileName.append("0"+std::to_string(dayOfmonth));
+	}
+	else
+	{
+		defaultKeyFileName.assign(std::to_string(year));
+		defaultKeyFileName.append(std::to_string(month));
+		defaultKeyFileName.append(std::to_string(dayOfmonth));
+	}
+	for (auto index=0; index!=8; ++index)
+	{
+		if (index==0) defaultKeyFileName.append("_");
+		else 
+		{
+			auto randomInteger = rand()%10;
+			defaultKeyFileName.append(std::to_string(randomInteger));
+		}	
+	}
+	defaultKeyFileName.append(".txt");
+	std::cout<<defaultKeyFileName<<std::endl;
+}
 void GenerateKeys::populateSymbols()
 {
 	addRange(symbols, 10, 10);
@@ -96,7 +148,6 @@ void GenerateKeys::keyMove()
 	{
 		std::string tmpKey{};	
 		generateKey(tmpKey, keySize);
-		std::cout << "Generated Key: " << tmpKey << std::endl;
 		keys.push_back(tmpKey);
 	}
 	if (isThereRepetition())
@@ -132,10 +183,11 @@ bool GenerateKeys::isThereRepetition()
 void GenerateKeys::keyDump()
 {
 	std::fstream dump{};
-	dump.open(defaultKeyFileName, std::ios::out);
+	dump.open(FolderStructure::keyDirectory+defaultKeyFileName, std::ios::out);
 	for (auto index = 0u; index!=keys.size(); ++index)
 		dump << keys[index] << '\n';
 	dump.close();
+	std::cout<<"dumped in: "<<FolderStructure::keyDirectory<<std::endl;
 }
 
 

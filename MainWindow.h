@@ -32,6 +32,7 @@ private slots:
 	void keyManagementWindow();
 	void passwordManageWindow();
 	void exitApplication();
+	void test();
 private:	
 	void setupMainWindow();
 	void createMenus();

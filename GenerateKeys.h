@@ -20,7 +20,7 @@ public:
 	friend class Decryption;
 	friend class KeyManagementWindow;
 private:
-	
+	void generatedFileName();	
 	void populateSymbols();
 	void populateNumbers();
 	void populateLetters();
@@ -32,7 +32,6 @@ private:
 	void print(const std::vector<int>&);
 
 	char getChar(std::vector<int>&);
-
 
 	std::vector<std::string> keys{};
 	std::vector<int> symbols;
