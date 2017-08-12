@@ -49,9 +49,6 @@ private:
 
 	unique_ptr<QTextEdit> textForCryption;
 
-	unique_ptr<QPushButton> cryptionButon;
-	unique_ptr<QPushButton> cryptionSwitch;
-
 	unique_ptr<QMenu> fileMenu;
 	unique_ptr<QMenu> editMenu;
 	unique_ptr<QAction> closeApplication;

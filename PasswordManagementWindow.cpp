@@ -10,7 +10,7 @@ void PasswordManagementWindow::setupWindow()
 	windowWidth=450;
 	windowHeight=450;
 
-	elementView=unique_ptr<QTableView>{new QTableView};
+	elementView=unique_ptr<QTableWidget>{new QTableWidget};
 
 	selectionBox=unique_ptr<QComboBox>{new QComboBox};
 	actionButton=unique_ptr<QPushButton>{new QPushButton{"i3"}};

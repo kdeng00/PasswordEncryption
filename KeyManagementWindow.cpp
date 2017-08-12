@@ -1,15 +1,21 @@
 #include<QString>
 #include<QWidget>
+#include<QHeaderView>
+#include<QTableWidgetItem>
+#include<iostream>
 #include<string>
 #include<sstream>
 #include<cstdlib>
 #include<fstream>
 #include<ios>
+#include"boost/filesystem.hpp"
 #include"KeyManagementWindow.h"
 #include"Encryption.h"
 #include"GenerateKeys.h"
 #include"KeyRetrieval.h"
 #include"Conversions.h"
+#include"FileNameRetrieval.h"
+#include"FolderStructure.h"
 
 KeyManagementWindow::KeyManagementWindow(QWidget* parent) : QDialog(parent)
 {
@@ -20,22 +26,62 @@ KeyManagementWindow::KeyManagementWindow(QWidget* parent) : QDialog(parent)
 
 void KeyManagementWindow::setContentsOfComboBox()
 {
-	KeyRetrieval kr{};
-	std::vector<int> c{kr.codeCharacterStructure()};
+	selectionBox.get()->clear();
+	FileNameRetrieval fnr;
+	fnr.retrieveFileNames();
+	std::vector<std::string> fn{fnr.fileNameContainer()};
 
-	for (auto index = 0u; index!=c.size(); ++index)
+	for (auto fle: fn)
 	{
-		std::string ch{static_cast<char>(c[index])};
-		QString bl = QString::fromStdString(ch);
+		QString bl{QString::fromStdString(fle)};
 		selectionBox.get()->addItem(bl);
 	}
+}
+void KeyManagementWindow::setContentOfKeyView()
+{
+	QString testQ;
+	testQ.append(selectionBox.get()->currentText());
+	std::string testS{FolderStructure::keyDirectory+testQ.toStdString()};
+	
+	KeyRetrieval kr{testS};
+	std::vector<int> asciiKeys{kr.codeCharacterStructure()};
+	std::vector<std::string> asciiAssignment{kr.keyStructure()};
+
+	auto asciiKeysIter = asciiKeys.begin();
+	auto asciiAssignmentIter = asciiAssignment.begin();
+	for (auto row=0; row!=rowCount; ++row)
+	{
+		for (auto column=0; column!=columnCount; ++column)
+		{
+			if (column==0)
+			{
+				std::string val{*asciiKeysIter++};
+				QString s{val.c_str()};
+				elementView.get()->setItem(row, column, new QTableWidgetItem(s));
+			}	
+			else
+			{
+				std::string val{*asciiAssignmentIter++};
+				QString s{val.c_str()};
+				elementView.get()->setItem(row, column, new QTableWidgetItem(s));
+			}
+		}
+	}	
 }
 void KeyManagementWindow::setupWindow()
 {
 	windowWidth = 450;
 	windowHeight = 450;
+	rowCount = 96;
+	columnCount = 2;
 
-	elementView = unique_ptr<QTableView>{new QTableView};
+	elementView = unique_ptr<QTableWidget>{new QTableWidget};
+
+	elementView.get()->setRowCount(rowCount);
+	elementView.get()->setColumnCount(columnCount);
+	tableHeader<<"character"<<"key";
+	elementView.get()->setHorizontalHeaderLabels(tableHeader);
+	elementView.get()->verticalHeader()->setVisible(false);
 
 	selectionBox = unique_ptr<QComboBox>{new QComboBox{}};
 
@@ -76,9 +122,9 @@ void KeyManagementWindow::setupWindow()
 }
 void KeyManagementWindow::connections()
 {
-	QObject::connect(selectionBox.get(), SIGNAL(currentIndexChanged(int)), SLOT(test()));
 	QObject::connect(generateNewKeys.get(), SIGNAL(clicked()), this, SLOT(generation()));
 	QObject::connect(closeButton.get(), SIGNAL(clicked()), this, SLOT(exitApplication()));
+	QObject::connect(actionButton.get(), SIGNAL(clicked()), this, SLOT(setContentOfKeyView()));
 }
 void KeyManagementWindow::test()
 {
@@ -95,12 +141,12 @@ void KeyManagementWindow::test()
 
 	std::string value{encrypted[f]};	
 	QString v{QString::fromStdString(value)};
-	//valueOfKey.get()->setText(v);
 }
 void KeyManagementWindow::generation()
 {
 	GenerateKeys gk{};
 	gk.keyMove();
 	gk.keyDump();
+	setContentsOfComboBox();
 }
 void KeyManagementWindow::exitApplication() { this->hide(); }

@@ -8,6 +8,12 @@ KeyRetrieval::KeyRetrieval()
 	retrieveKey();
 	addToList();
 }
+KeyRetrieval::KeyRetrieval(const std::string fileName)
+{
+	this->fileName.assign(fileName);
+	retrieveKey();
+	addToList();
+}
 
 void KeyRetrieval::retrieveKey()
 {
@@ -20,6 +26,7 @@ void KeyRetrieval::retrieveKey()
 		if (keyChar[0]!='\0')
 			keys.push_back(keyChar);
 	}
+	readKeys.close();
 }
 void KeyRetrieval::addToList()
 {
@@ -39,6 +46,7 @@ void KeyRetrieval::addRange(int from, const int to)
 	for (; from<=to; ++from)
 		codeCharacter.push_back(from);
 }
+void KeyRetrieval::fileNameChoice(const std::string& fileName) { this->fileName.assign(fileName); }
 
 std::vector<std::string> KeyRetrieval::keyStructure() { return keys; }
 std::vector<int> KeyRetrieval::codeCharacterStructure() { return codeCharacter; }

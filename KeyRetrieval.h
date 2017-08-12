@@ -9,11 +9,13 @@ class KeyRetrieval
 {
 public:
 	KeyRetrieval();
+	KeyRetrieval(const std::string);
 	~KeyRetrieval() = default;
 
 	void retrieveKey();
 	void addToList();
 	void addRange(int, const int);
+	void fileNameChoice(const std::string&);
 
 	std::vector<std::string> keyStructure();
 	std::vector<int> codeCharacterStructure();

@@ -73,11 +73,14 @@ void MainWindow::connections()
 
 void MainWindow::changeCryptionType()
 {
+	/**
 	(cryptionChoice) ? cryptionSwitch->setText("decrypt chosen") : cryptionSwitch->setText("encrypt chosen");
 	cryptionChoice = (cryptionChoice) ? false : true;
+	*/
 }
 void MainWindow::determineCryption()
 {
+	/**
 	if (cryptionChoice)
 	{
 		Encryption ec{grabCryptionText()};
@@ -98,6 +101,7 @@ void MainWindow::determineCryption()
 		cryptionSwitch.get()->setText("encrypt chosen");
 		cryptionChoice = true;
 	}
+	*/
 }
 void MainWindow::keyManagementWindow() { kh.get()->show(); }
 void MainWindow::passwordManageWindow() { ph.get()->show(); }
