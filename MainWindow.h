@@ -27,14 +27,14 @@ public:
 signals:
 
 private slots:
-	void changeCryptionType();
-	void determineCryption();
+	void encryptPassword();
 	void keyManagementWindow();
 	void passwordManageWindow();
 	void exitApplication();
-	void test();
+	void activateButton();
 private:	
 	void setupMainWindow();
+	void setupContentOfComboBox();
 	void createMenus();
 	void connections();
 
@@ -59,7 +59,5 @@ private:
 	unique_ptr<PasswordManagementWindow> ph;
 
 	std::string grabCryptionText();
-
-	bool cryptionChoice;
 };
 #endif

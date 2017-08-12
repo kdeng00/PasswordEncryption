@@ -4,6 +4,8 @@
 #include"Encryption.h"
 #include"Decryption.h"
 #include"KeyRetrieval.h"
+#include"FileNameRetrieval.h"
+#include"FolderStructure.h"
 
 MainWindow::MainWindow()
 {
@@ -38,12 +40,26 @@ void MainWindow::setupMainWindow()
 	addDockWidget(Qt::LeftDockWidgetArea, cryptionArea.get());
 
 	createMenus();
+	setupContentOfComboBox();
 
 	setWindowTitle("Encryption Decryption Messaging");
 	setFixedHeight(windowHeight);
 	setFixedWidth(windowWidth);
 	actionButton.get()->setEnabled(false);
 	connections();
+}
+void MainWindow::setupContentOfComboBox()
+{
+	selectionBox.get()->clear();
+	FileNameRetrieval fnr;
+	fnr.retrieveFileNames();
+	std::vector<std::string> fn{fnr.fileNameContainer()};
+
+	for (auto fle: fn)
+	{
+		QString bl{QString::fromStdString(fle)};
+		selectionBox.get()->addItem(bl);
+	}
 }
 void MainWindow::createMenus()
 {
@@ -67,41 +83,20 @@ void MainWindow::connections()
 	QObject::connect(closeApplication.get(), SIGNAL(triggered()), this, SLOT(exitApplication()));
 	QObject::connect(keyEdit.get(), SIGNAL(triggered()), this, SLOT(keyManagementWindow()));
 	QObject::connect(passwordManage.get(), SIGNAL(triggered()), this, SLOT(passwordManageWindow()));
-	QObject::connect(actionButton.get(), SIGNAL(clicked()), this, SLOT(test()));
+	QObject::connect(actionButton.get(), SIGNAL(clicked()), this, SLOT(encryptPassword()));
+	QObject::connect(textForCryption.get(), SIGNAL(textChanged()), this, SLOT(activateButton()));
 }
 
 
-void MainWindow::changeCryptionType()
+void MainWindow::encryptPassword()
 {
-	/**
-	(cryptionChoice) ? cryptionSwitch->setText("decrypt chosen") : cryptionSwitch->setText("encrypt chosen");
-	cryptionChoice = (cryptionChoice) ? false : true;
-	*/
-}
-void MainWindow::determineCryption()
-{
-	/**
-	if (cryptionChoice)
-	{
-		Encryption ec{grabCryptionText()};
-
-		textForCryption.get()->clear();
-		textForCryption.get()->setText(QString::fromStdString(ec.getEncryptedMessage()));
-
-		cryptionSwitch.get()->setText("decrypt chosen");
-		cryptionChoice = false;
-	}
-	else
-	{
-		Decryption dc{grabCryptionText()};
-
-		textForCryption.get()->clear();
-		textForCryption.get()->setText(QString::fromStdString(dc.getDecryptedMessage()));
-
-		cryptionSwitch.get()->setText("encrypt chosen");
-		cryptionChoice = true;
-	}
-	*/
+	QString passwordToEncrypt{textForCryption.get()->toPlainText()}, keyForEncryption{selectionBox.get()->currentText()};
+	auto passwordToEncryptString = passwordToEncrypt.toStdString(), keyForEncryptionString = FolderStructure::keyDirectory+keyForEncryption.toStdString();
+	std::cout<<"Will encrypt \""<<passwordToEncryptString<<"\""<<std::endl;
+	std::cout<<"With key \""<<keyForEncryptionString<<"\""<<std::endl;
+	std::cout<<"Encrypting..."<<std::endl;
+	Encryption ec{passwordToEncryptString, keyForEncryptionString};
+	std::cout<<"Encrypted"<<std::endl;
 }
 void MainWindow::keyManagementWindow() { kh.get()->show(); }
 void MainWindow::passwordManageWindow() { ph.get()->show(); }
@@ -114,4 +109,9 @@ std::string MainWindow::grabCryptionText()
 	
 	return placeHolder.toStdString();
 }	
-void MainWindow::test() { std::cout<<"Action button Works"<<std::endl; }
+void MainWindow::activateButton() 
+{ 
+	QString content{textForCryption.get()->toPlainText()};
+	if (content.size()>0 && selectionBox.get()->count()>0) actionButton.get()->setEnabled(true);
+	else actionButton.get()->setEnabled(false);
+}

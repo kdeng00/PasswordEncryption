@@ -55,8 +55,25 @@ void KeyManagementWindow::setContentOfKeyView()
 		{
 			if (column==0)
 			{
-				std::string val{*asciiKeysIter++};
-				QString s{val.c_str()};
+				std::string val;
+				QString s;
+				switch (*asciiKeysIter)
+				{
+					case 10:
+						val.assign("New Line");	
+						s.append(val.c_str());
+						++asciiKeysIter;
+						break;
+					case 32:
+						val.assign("White space");
+						s.append(val.c_str());
+						++asciiKeysIter;
+						break;
+					default:
+						val.assign(std::string{static_cast<char>(*asciiKeysIter++)});
+						s.append(val.c_str());
+						break;
+				}
 				elementView.get()->setItem(row, column, new QTableWidgetItem(s));
 			}	
 			else
@@ -126,6 +143,7 @@ void KeyManagementWindow::connections()
 	QObject::connect(closeButton.get(), SIGNAL(clicked()), this, SLOT(exitApplication()));
 	QObject::connect(actionButton.get(), SIGNAL(clicked()), this, SLOT(setContentOfKeyView()));
 }
+/**
 void KeyManagementWindow::test()
 {
 	std::string emp{"d"};
@@ -142,6 +160,7 @@ void KeyManagementWindow::test()
 	std::string value{encrypted[f]};	
 	QString v{QString::fromStdString(value)};
 }
+*/
 void KeyManagementWindow::generation()
 {
 	GenerateKeys gk{};

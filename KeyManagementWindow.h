@@ -14,7 +14,7 @@ public:
 	KeyManagementWindow(QWidget* parent = 0);
 	~KeyManagementWindow() = default;
 private slots:	
-	void test();
+	//void test();
 	void generation();
 	void exitApplication();
 	void setContentOfKeyView();

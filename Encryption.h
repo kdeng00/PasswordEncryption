@@ -10,7 +10,8 @@ class Encryption : public Cryption
 public:
 	Encryption() = default;
 	~Encryption() = default;
-	Encryption(const std::string&);
+	//Encryption(const std::string&);
+	explicit Encryption(const std::string&, const std::string&);
 
 	void setEncryptedMessage(const std::string&);
 	void setMessage(const std::string&) override;
@@ -20,8 +21,11 @@ public:
 	std::string getMessage() const override;
 	std::map<char, std::string> encryptedCharactersStructure();
 private:
-	void setupMap();
+	void setupMap(const std::string&);
+	void configurePasswordFileName();
+	bool repetitive();
 	std::string encryptedMessage;
+	std::string passwordFileName;
 	std::map<char, std::string> encryptedCharacters;
 };
 #endif
