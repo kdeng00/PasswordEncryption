@@ -38,6 +38,7 @@ HEADERS += Characters.h \
            MainWindow.h \
            Password.h \
            PasswordManagementWindow.h \
+	   SaveFile.h \
            TimeInformation.h \
            ViewingWindow.h
 SOURCES += Cryption.cpp \
@@ -50,4 +51,5 @@ SOURCES += Cryption.cpp \
            KeyRetrieval.cpp \
            Main.cpp \
            MainWindow.cpp \
-           PasswordManagementWindow.cpp
+           PasswordManagementWindow.cpp \
+	   SaveFile.cpp

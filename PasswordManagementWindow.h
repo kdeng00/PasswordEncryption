@@ -5,6 +5,8 @@
 #include"CommonWindow.h"
 #include"ViewingWindow.h"
 
+#include"SaveFile.h"
+
 using std::vector;
 
 class PasswordManagementWindow : public QDialog, public CommonWindow, public ViewingWindow

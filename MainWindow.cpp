@@ -92,7 +92,12 @@ void MainWindow::connections()
 	QObject::connect(textForCryption.get(), SIGNAL(textChanged()), this, SLOT(activateButton()));
 }
 
-
+/*
+ * February 26, 2018
+ *
+ * Work on asking the user to enter a filename
+ *
+ */
 void MainWindow::encryptPassword()
 {
 	QString passwordToEncrypt{textForCryption.get()->toPlainText()}, keyForEncryption{selectionBox.get()->currentText()};

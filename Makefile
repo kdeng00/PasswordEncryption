@@ -15,7 +15,7 @@ CXX           = g++
 DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -march=x86-64 -mtune=generic -O2 -pipe -fstack-protector-strong -fno-plt -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -O2 -march=x86-64 -mtune=generic -O2 -pipe -fstack-protector-strong -fno-plt -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I. -I. -isystem /usr/include/qt -isystem /usr/include/qt/QtWidgets -isystem /usr/include/qt/QtGui -isystem /usr/include/qt/QtCore -I. -isystem /usr/include/libdrm -I/usr/lib/qt/mkspecs/linux-g++ -I /usr/include/boost
+INCPATH       = -I. -I. -isystem /usr/include/qt -isystem /usr/include/qt/QtWidgets -isystem /usr/include/qt/QtGui -isystem /usr/include/qt/QtCore -I. -isystem /usr/include/libdrm -I/usr/lib/qt/mkspecs/linux-g++ -I "/usr/include/boost"
 QMAKE         = /usr/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -35,7 +35,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = PasswordEncryption1.0.0
-DISTDIR = /home/monde/Downloads/PasswordEncryption/.tmp/PasswordEncryption1.0.0
+DISTDIR = /home/monde/Programming/C++/PasswordEncryption/.tmp/PasswordEncryption1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now
 LIBS          = $(SUBLIBS) -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread -L "/usr/include/boost" -lboost_filesystem -lboost_system
@@ -60,9 +60,11 @@ SOURCES       = Cryption.cpp \
 		KeyRetrieval.cpp \
 		Main.cpp \
 		MainWindow.cpp \
-		PasswordManagementWindow.cpp moc_KeyManagementWindow.cpp \
+		PasswordManagementWindow.cpp \
+		SaveFile.cpp moc_KeyManagementWindow.cpp \
 		moc_MainWindow.cpp \
-		moc_PasswordManagementWindow.cpp
+		moc_PasswordManagementWindow.cpp \
+		moc_SaveFile.cpp
 OBJECTS       = Cryption.o \
 		Decryption.o \
 		Encryption.o \
@@ -74,9 +76,11 @@ OBJECTS       = Cryption.o \
 		Main.o \
 		MainWindow.o \
 		PasswordManagementWindow.o \
+		SaveFile.o \
 		moc_KeyManagementWindow.o \
 		moc_MainWindow.o \
-		moc_PasswordManagementWindow.o
+		moc_PasswordManagementWindow.o \
+		moc_SaveFile.o
 DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/common/unix.conf \
 		/usr/lib/qt/mkspecs/common/linux.conf \
@@ -133,6 +137,7 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/qt_config.prf \
 		/usr/lib/qt/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/qt/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/qt/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/qt/mkspecs/features/toolchain.prf \
 		/usr/lib/qt/mkspecs/features/default_pre.prf \
@@ -169,6 +174,7 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		MainWindow.h \
 		Password.h \
 		PasswordManagementWindow.h \
+		SaveFile.h \
 		TimeInformation.h \
 		ViewingWindow.h Cryption.cpp \
 		Decryption.cpp \
@@ -180,7 +186,8 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		KeyRetrieval.cpp \
 		Main.cpp \
 		MainWindow.cpp \
-		PasswordManagementWindow.cpp
+		PasswordManagementWindow.cpp \
+		SaveFile.cpp
 QMAKE_TARGET  = PasswordEncryption
 DESTDIR       = 
 TARGET        = PasswordEncryption
@@ -248,6 +255,7 @@ Makefile: PasswordEncryption.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/l
 		/usr/lib/qt/mkspecs/features/qt_config.prf \
 		/usr/lib/qt/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/qt/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/qt/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/qt/mkspecs/features/toolchain.prf \
 		/usr/lib/qt/mkspecs/features/default_pre.prf \
@@ -327,6 +335,7 @@ Makefile: PasswordEncryption.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/l
 /usr/lib/qt/mkspecs/features/qt_config.prf:
 /usr/lib/qt/mkspecs/linux-g++/qmake.conf:
 /usr/lib/qt/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/qt/mkspecs/features/exclusive_builds.prf:
 /usr/lib/qt/mkspecs/features/toolchain.prf:
 /usr/lib/qt/mkspecs/features/default_pre.prf:
@@ -364,8 +373,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents Characters.h CommonWindow.h Conversions.h Cryption.h Decryption.h Demo.h Encryption.h FileNameRetrieval.h FolderStructure.h GenerateDate.h GenerateKeys.h GeneratePasswordFileName.h Key.h KeyManagementWindow.h KeyRetrieval.h MainWindow.h Password.h PasswordManagementWindow.h TimeInformation.h ViewingWindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents Cryption.cpp Decryption.cpp Encryption.cpp FileNameRetrieval.cpp FolderStructure.cpp GeneratePasswordFileName.cpp KeyManagementWindow.cpp KeyRetrieval.cpp Main.cpp MainWindow.cpp PasswordManagementWindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents Characters.h CommonWindow.h Conversions.h Cryption.h Decryption.h Demo.h Encryption.h FileNameRetrieval.h FolderStructure.h GenerateDate.h GenerateKeys.h GeneratePasswordFileName.h Key.h KeyManagementWindow.h KeyRetrieval.h MainWindow.h Password.h PasswordManagementWindow.h SaveFile.h TimeInformation.h ViewingWindow.h $(DISTDIR)/
+	$(COPY_FILE) --parents Cryption.cpp Decryption.cpp Encryption.cpp FileNameRetrieval.cpp FolderStructure.cpp GeneratePasswordFileName.cpp KeyManagementWindow.cpp KeyRetrieval.cpp Main.cpp MainWindow.cpp PasswordManagementWindow.cpp SaveFile.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -397,9 +406,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/qt/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -march=x86-64 -mtune=generic -O2 -pipe -fstack-protector-strong -fno-plt -Wall -W -dM -E -o moc_predefs.h /usr/lib/qt/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_KeyManagementWindow.cpp moc_MainWindow.cpp moc_PasswordManagementWindow.cpp
+compiler_moc_header_make_all: moc_KeyManagementWindow.cpp moc_MainWindow.cpp moc_PasswordManagementWindow.cpp moc_SaveFile.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_KeyManagementWindow.cpp moc_MainWindow.cpp moc_PasswordManagementWindow.cpp
+	-$(DEL_FILE) moc_KeyManagementWindow.cpp moc_MainWindow.cpp moc_PasswordManagementWindow.cpp moc_SaveFile.cpp
 moc_KeyManagementWindow.cpp: CommonWindow.h \
 		Encryption.h \
 		Cryption.h \
@@ -414,10 +423,11 @@ moc_KeyManagementWindow.cpp: CommonWindow.h \
 		KeyManagementWindow.h \
 		PasswordManagementWindow.h \
 		ViewingWindow.h \
+		SaveFile.h \
 		KeyManagementWindow.h \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/monde/Downloads/PasswordEncryption -I/home/monde/Downloads/PasswordEncryption -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/7.3.0 -I/usr/include/c++/7.3.0/x86_64-pc-linux-gnu -I/usr/include/c++/7.3.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include-fixed -I/usr/include KeyManagementWindow.h -o moc_KeyManagementWindow.cpp
+	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/monde/Programming/C++/PasswordEncryption -I/home/monde/Programming/C++/PasswordEncryption -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/7.3.0 -I/usr/include/c++/7.3.0/x86_64-pc-linux-gnu -I/usr/include/c++/7.3.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include-fixed -I/usr/include KeyManagementWindow.h -o moc_KeyManagementWindow.cpp
 
 moc_MainWindow.cpp: KeyManagementWindow.h \
 		CommonWindow.h \
@@ -433,17 +443,26 @@ moc_MainWindow.cpp: KeyManagementWindow.h \
 		MainWindow.h \
 		PasswordManagementWindow.h \
 		ViewingWindow.h \
+		SaveFile.h \
 		MainWindow.h \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/monde/Downloads/PasswordEncryption -I/home/monde/Downloads/PasswordEncryption -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/7.3.0 -I/usr/include/c++/7.3.0/x86_64-pc-linux-gnu -I/usr/include/c++/7.3.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include-fixed -I/usr/include MainWindow.h -o moc_MainWindow.cpp
+	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/monde/Programming/C++/PasswordEncryption -I/home/monde/Programming/C++/PasswordEncryption -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/7.3.0 -I/usr/include/c++/7.3.0/x86_64-pc-linux-gnu -I/usr/include/c++/7.3.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include-fixed -I/usr/include MainWindow.h -o moc_MainWindow.cpp
 
 moc_PasswordManagementWindow.cpp: CommonWindow.h \
 		ViewingWindow.h \
+		SaveFile.h \
 		PasswordManagementWindow.h \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/monde/Downloads/PasswordEncryption -I/home/monde/Downloads/PasswordEncryption -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/7.3.0 -I/usr/include/c++/7.3.0/x86_64-pc-linux-gnu -I/usr/include/c++/7.3.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include-fixed -I/usr/include PasswordManagementWindow.h -o moc_PasswordManagementWindow.cpp
+	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/monde/Programming/C++/PasswordEncryption -I/home/monde/Programming/C++/PasswordEncryption -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/7.3.0 -I/usr/include/c++/7.3.0/x86_64-pc-linux-gnu -I/usr/include/c++/7.3.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include-fixed -I/usr/include PasswordManagementWindow.h -o moc_PasswordManagementWindow.cpp
+
+moc_SaveFile.cpp: CommonWindow.h \
+		ViewingWindow.h \
+		SaveFile.h \
+		moc_predefs.h \
+		/usr/bin/moc
+	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/monde/Programming/C++/PasswordEncryption -I/home/monde/Programming/C++/PasswordEncryption -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/7.3.0 -I/usr/include/c++/7.3.0/x86_64-pc-linux-gnu -I/usr/include/c++/7.3.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include-fixed -I/usr/include SaveFile.h -o moc_SaveFile.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -515,6 +534,7 @@ KeyManagementWindow.o: KeyManagementWindow.cpp KeyManagementWindow.h \
 		MainWindow.h \
 		PasswordManagementWindow.h \
 		ViewingWindow.h \
+		SaveFile.h \
 		GenerateKeys.h \
 		Characters.h \
 		KeyRetrieval.h
@@ -539,7 +559,8 @@ Main.o: Main.cpp MainWindow.h \
 		GeneratePasswordFileName.h \
 		TimeInformation.h \
 		PasswordManagementWindow.h \
-		ViewingWindow.h
+		ViewingWindow.h \
+		SaveFile.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Main.o Main.cpp
 
 MainWindow.o: MainWindow.cpp MainWindow.h \
@@ -556,6 +577,7 @@ MainWindow.o: MainWindow.cpp MainWindow.h \
 		TimeInformation.h \
 		PasswordManagementWindow.h \
 		ViewingWindow.h \
+		SaveFile.h \
 		Decryption.h \
 		KeyRetrieval.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MainWindow.o MainWindow.cpp
@@ -573,8 +595,14 @@ PasswordManagementWindow.o: PasswordManagementWindow.cpp Encryption.h \
 		Demo.h \
 		PasswordManagementWindow.h \
 		CommonWindow.h \
-		ViewingWindow.h
+		ViewingWindow.h \
+		SaveFile.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o PasswordManagementWindow.o PasswordManagementWindow.cpp
+
+SaveFile.o: SaveFile.cpp SaveFile.h \
+		CommonWindow.h \
+		ViewingWindow.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SaveFile.o SaveFile.cpp
 
 moc_KeyManagementWindow.o: moc_KeyManagementWindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_KeyManagementWindow.o moc_KeyManagementWindow.cpp
@@ -584,6 +612,9 @@ moc_MainWindow.o: moc_MainWindow.cpp
 
 moc_PasswordManagementWindow.o: moc_PasswordManagementWindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_PasswordManagementWindow.o moc_PasswordManagementWindow.cpp
+
+moc_SaveFile.o: moc_SaveFile.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_SaveFile.o moc_SaveFile.cpp
 
 ####### Install
 
