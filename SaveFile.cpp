@@ -34,5 +34,5 @@ void SaveFile::connections()
 }
 void SaveFile::saveFileAs()
 {
-
+	this->hide();
 }

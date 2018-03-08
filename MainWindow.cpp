@@ -15,6 +15,7 @@ MainWindow::MainWindow()
 	QWidget* w = 0;
 	ph = unique_ptr<PasswordManagementWindow>{new PasswordManagementWindow};
 	kh = unique_ptr<KeyManagementWindow>{new KeyManagementWindow{w, mw, ph.get()}};
+	sf = unique_ptr<SaveFile>{new SaveFile};
 	setupMainWindow();
 }
 
@@ -91,17 +92,60 @@ void MainWindow::connections()
 	QObject::connect(actionButton.get(), SIGNAL(clicked()), this, SLOT(encryptPassword()));
 	QObject::connect(textForCryption.get(), SIGNAL(textChanged()), this, SLOT(activateButton()));
 }
+void MainWindow::switchControlEnabling()
+{
+	if (controlsEnabled)
+	{
+		switchControls(!controlsEnabled);
+		controlsEnabled = false;
+	}
+	else
+	{
+		switchControls(!controlsEnabled);
+		controlsEnabled = true;
+	}
+}
+void MainWindow::switchControls(const bool enabled)
+{
+	textForCryption.get()->setEnabled(enabled);
+	selectionBox.get()->setEnabled(enabled);
+	actionButton.get()->setEnabled(enabled);
+	passwordManage.get()->setEnabled(enabled);
+}
+void MainWindow::requestFilename()
+{
+	std::cout<<"Start"<<std::endl;
+	//sf.get()->show();
+	SaveFile* sfo = new SaveFile{};
+	sfo->show();
+	//sfo->quit();
+	std::cout<<"End"<<std::endl;
+}
 
 /*
  * February 26, 2018
  *
  * Work on asking the user to enter a filename
  *
+ * Update: February 27, 2018
+ *
+ * Continue working on asking the user for a filename.
+ * I got it working so the controls that are related to
+ * passwords are disabled. What needs to be done is
+ * have it so that the password is not encrypted until
+ * the button for confirming the password filename is
+ * clicked. Might have to create a helper function
+ * for the encryptPassword function
  */
 void MainWindow::encryptPassword()
 {
+	requestFilename();
+	switchControlEnabling();
+	/**
+
 	QString passwordToEncrypt{textForCryption.get()->toPlainText()}, keyForEncryption{selectionBox.get()->currentText()};
 	auto passwordToEncryptString = passwordToEncrypt.toStdString(), keyForEncryptionString = FolderStructure::keyDirectory+keyForEncryption.toStdString();
+	std::cout<<"Generated filename that contains encrypted password: "<<passwordToEncryptString<<std::endl;
 	auto strKeyFilename = keyForEncryption.toStdString();
 	Password<> pass{};
 	Key<> k;
@@ -111,6 +155,7 @@ void MainWindow::encryptPassword()
 	Encryption ec2{pass, k};
 	std::cout<<"Encrypted"<<std::endl;
 	ph.get()->populatePass();
+	*/
 }
 void MainWindow::keyManagementWindow() { kh.get()->show(); }
 void MainWindow::passwordManageWindow() { ph.get()->show(); }

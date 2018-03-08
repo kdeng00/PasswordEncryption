@@ -37,6 +37,9 @@ private:
 	void setupContentOfComboBox();
 	void createMenus();
 	void connections();
+	void switchControlEnabling();
+	void switchControls(const bool);
+	void requestFilename();
 
 	unique_ptr<QVBoxLayout> buttonLayout;
 
@@ -55,7 +58,9 @@ private:
 
 	unique_ptr<KeyManagementWindow> kh;
 	unique_ptr<PasswordManagementWindow> ph;
+	unique_ptr<SaveFile> sf;
 
 	string grabCryptionText();
+	bool controlsEnabled{true};
 };
 #endif

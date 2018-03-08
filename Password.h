@@ -83,5 +83,4 @@ bool Password<S>::repetitive()
 	}
 	return false;
 }
-
 #endif
