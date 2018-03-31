@@ -25,6 +25,7 @@ public:
 	void setupEncryptedMessage(const S&);
 	void setupDecryptedMessage(const S&);
 	void setupPasswordFilename();
+	void setupPasswordFilename(const S&);
 	void setupDate();
 	S retrieveEncryptedMessage() const;
 	S retrieveDecryptedMessage() const;
@@ -57,6 +58,14 @@ void Password<S>::setupPasswordFilename()
 		dayOfMonth = gp.retrieveDayOfMonth();
 		filename.assign(gp.passwordFileNameString());
 	}
+}
+template<typename S>
+void Password<S>::setupPasswordFilename(const S& fin)
+{
+	for (auto passwordNameDoesNotExist = true; passwordNameDoesNotExist; passwordNameDoesNotExist = repetitive())
+	{
+		filename.assign(fin);
+	}	
 }
 template<typename S>
 S Password<S>::retrieveEncryptedMessage() const { return encryptedMessage; }

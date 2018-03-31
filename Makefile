@@ -15,7 +15,7 @@ CXX           = g++
 DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -march=x86-64 -mtune=generic -O2 -pipe -fstack-protector-strong -fno-plt -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -O2 -march=x86-64 -mtune=generic -O2 -pipe -fstack-protector-strong -fno-plt -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I. -I. -isystem /usr/include/qt -isystem /usr/include/qt/QtWidgets -isystem /usr/include/qt/QtGui -isystem /usr/include/qt/QtCore -I. -isystem /usr/include/libdrm -I/usr/lib/qt/mkspecs/linux-g++ -I "/usr/include/boost"
+INCPATH       = -I. -I. -isystem /usr/include/qt -isystem /usr/include/qt/QtWidgets -isystem /usr/include/qt/QtGui -isystem /usr/include/qt/QtCore -I. -isystem /usr/include/libdrm -I/usr/lib/qt/mkspecs/linux-g++ -I /usr/include/boost
 QMAKE         = /usr/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -35,10 +35,10 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = PasswordEncryption1.0.0
-DISTDIR = /home/monde/Programming/C++/PasswordEncryption/.tmp/PasswordEncryption1.0.0
+DISTDIR = /home/flueric/Programming/C++/PasswordEncryption/.tmp/PasswordEncryption1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now
-LIBS          = $(SUBLIBS) -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread -L "/usr/include/boost" -lboost_filesystem -lboost_system
+LIBS          = $(SUBLIBS) -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread -L "/usr/include/boost" -lboost_system -lboost_filesystem
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -137,7 +137,6 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/qt_config.prf \
 		/usr/lib/qt/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/qt/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/usr/lib/qt/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/qt/mkspecs/features/toolchain.prf \
 		/usr/lib/qt/mkspecs/features/default_pre.prf \
@@ -255,7 +254,6 @@ Makefile: PasswordEncryption.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/l
 		/usr/lib/qt/mkspecs/features/qt_config.prf \
 		/usr/lib/qt/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/qt/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/usr/lib/qt/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/qt/mkspecs/features/toolchain.prf \
 		/usr/lib/qt/mkspecs/features/default_pre.prf \
@@ -335,7 +333,6 @@ Makefile: PasswordEncryption.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/l
 /usr/lib/qt/mkspecs/features/qt_config.prf:
 /usr/lib/qt/mkspecs/linux-g++/qmake.conf:
 /usr/lib/qt/mkspecs/features/spec_post.prf:
-.qmake.stash:
 /usr/lib/qt/mkspecs/features/exclusive_builds.prf:
 /usr/lib/qt/mkspecs/features/toolchain.prf:
 /usr/lib/qt/mkspecs/features/default_pre.prf:
@@ -427,7 +424,7 @@ moc_KeyManagementWindow.cpp: CommonWindow.h \
 		KeyManagementWindow.h \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/monde/Programming/C++/PasswordEncryption -I/home/monde/Programming/C++/PasswordEncryption -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/7.3.0 -I/usr/include/c++/7.3.0/x86_64-pc-linux-gnu -I/usr/include/c++/7.3.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include-fixed -I/usr/include KeyManagementWindow.h -o moc_KeyManagementWindow.cpp
+	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/flueric/Programming/C++/PasswordEncryption -I/home/flueric/Programming/C++/PasswordEncryption -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/7.3.1 -I/usr/include/c++/7.3.1/x86_64-pc-linux-gnu -I/usr/include/c++/7.3.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.1/include-fixed -I/usr/include KeyManagementWindow.h -o moc_KeyManagementWindow.cpp
 
 moc_MainWindow.cpp: KeyManagementWindow.h \
 		CommonWindow.h \
@@ -447,7 +444,7 @@ moc_MainWindow.cpp: KeyManagementWindow.h \
 		MainWindow.h \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/monde/Programming/C++/PasswordEncryption -I/home/monde/Programming/C++/PasswordEncryption -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/7.3.0 -I/usr/include/c++/7.3.0/x86_64-pc-linux-gnu -I/usr/include/c++/7.3.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include-fixed -I/usr/include MainWindow.h -o moc_MainWindow.cpp
+	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/flueric/Programming/C++/PasswordEncryption -I/home/flueric/Programming/C++/PasswordEncryption -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/7.3.1 -I/usr/include/c++/7.3.1/x86_64-pc-linux-gnu -I/usr/include/c++/7.3.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.1/include-fixed -I/usr/include MainWindow.h -o moc_MainWindow.cpp
 
 moc_PasswordManagementWindow.cpp: CommonWindow.h \
 		ViewingWindow.h \
@@ -455,14 +452,14 @@ moc_PasswordManagementWindow.cpp: CommonWindow.h \
 		PasswordManagementWindow.h \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/monde/Programming/C++/PasswordEncryption -I/home/monde/Programming/C++/PasswordEncryption -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/7.3.0 -I/usr/include/c++/7.3.0/x86_64-pc-linux-gnu -I/usr/include/c++/7.3.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include-fixed -I/usr/include PasswordManagementWindow.h -o moc_PasswordManagementWindow.cpp
+	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/flueric/Programming/C++/PasswordEncryption -I/home/flueric/Programming/C++/PasswordEncryption -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/7.3.1 -I/usr/include/c++/7.3.1/x86_64-pc-linux-gnu -I/usr/include/c++/7.3.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.1/include-fixed -I/usr/include PasswordManagementWindow.h -o moc_PasswordManagementWindow.cpp
 
 moc_SaveFile.cpp: CommonWindow.h \
 		ViewingWindow.h \
 		SaveFile.h \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/monde/Programming/C++/PasswordEncryption -I/home/monde/Programming/C++/PasswordEncryption -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/7.3.0 -I/usr/include/c++/7.3.0/x86_64-pc-linux-gnu -I/usr/include/c++/7.3.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include-fixed -I/usr/include SaveFile.h -o moc_SaveFile.cpp
+	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/flueric/Programming/C++/PasswordEncryption -I/home/flueric/Programming/C++/PasswordEncryption -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/7.3.1 -I/usr/include/c++/7.3.1/x86_64-pc-linux-gnu -I/usr/include/c++/7.3.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.1/include-fixed -I/usr/include SaveFile.h -o moc_SaveFile.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:

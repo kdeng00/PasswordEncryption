@@ -1,9 +1,11 @@
+#include<QString>
 #include"SaveFile.h"
 
-SaveFile::SaveFile(QWidget* parent) : QDialog(parent)
-{
-	setupWindow();	
-}	
+string SaveFile::filenameStr = "default.txt";
+
+SaveFile::SaveFile(QWidget* parent) : QDialog(parent) { setupWindow();	}	
+SaveFile::SaveFile(QWidget* parent, MainWindow* mw) : QDialog(parent), mw(mw) { setupWindow(); }
+	
 
 void SaveFile::setupWindow()
 {
@@ -34,5 +36,11 @@ void SaveFile::connections()
 }
 void SaveFile::saveFileAs()
 {
+	QString fs = filename.get()->text();
+	filenameStr.assign(fs.toUtf8().constData());
+	filenameStr.append(".txt");
+
+	mw.get()->processEncryption();
+
 	this->hide();
 }

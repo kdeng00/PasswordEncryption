@@ -8,6 +8,7 @@
 #include"FolderStructure.h"
 #include"Key.h"
 #include"Password.h"
+#include"SaveFile.h" //Do not know if it is included somewhere
 
 MainWindow::MainWindow()
 {
@@ -15,7 +16,7 @@ MainWindow::MainWindow()
 	QWidget* w = 0;
 	ph = unique_ptr<PasswordManagementWindow>{new PasswordManagementWindow};
 	kh = unique_ptr<KeyManagementWindow>{new KeyManagementWindow{w, mw, ph.get()}};
-	sf = unique_ptr<SaveFile>{new SaveFile};
+	sf = unique_ptr<SaveFile>{new SaveFile{w, mw}};
 	setupMainWindow();
 }
 
@@ -115,47 +116,14 @@ void MainWindow::switchControls(const bool enabled)
 void MainWindow::requestFilename()
 {
 	std::cout<<"Start"<<std::endl;
-	//sf.get()->show();
-	SaveFile* sfo = new SaveFile{};
-	sfo->show();
-	//sfo->quit();
+	sf.get()->show();
 	std::cout<<"End"<<std::endl;
 }
 
-/*
- * February 26, 2018
- *
- * Work on asking the user to enter a filename
- *
- * Update: February 27, 2018
- *
- * Continue working on asking the user for a filename.
- * I got it working so the controls that are related to
- * passwords are disabled. What needs to be done is
- * have it so that the password is not encrypted until
- * the button for confirming the password filename is
- * clicked. Might have to create a helper function
- * for the encryptPassword function
- */
 void MainWindow::encryptPassword()
 {
 	requestFilename();
 	switchControlEnabling();
-	/**
-
-	QString passwordToEncrypt{textForCryption.get()->toPlainText()}, keyForEncryption{selectionBox.get()->currentText()};
-	auto passwordToEncryptString = passwordToEncrypt.toStdString(), keyForEncryptionString = FolderStructure::keyDirectory+keyForEncryption.toStdString();
-	std::cout<<"Generated filename that contains encrypted password: "<<passwordToEncryptString<<std::endl;
-	auto strKeyFilename = keyForEncryption.toStdString();
-	Password<> pass{};
-	Key<> k;
-	pass.setupDecryptedMessage(passwordToEncryptString);
-	k.setupFilename(strKeyFilename);
-
-	Encryption ec2{pass, k};
-	std::cout<<"Encrypted"<<std::endl;
-	ph.get()->populatePass();
-	*/
 }
 void MainWindow::keyManagementWindow() { kh.get()->show(); }
 void MainWindow::passwordManageWindow() { ph.get()->show(); }
@@ -174,3 +142,21 @@ void MainWindow::activateButton()
 	if (content.size()>0 && selectionBox.get()->count()>0) actionButton.get()->setEnabled(true);
 	else actionButton.get()->setEnabled(false);
 }
+void MainWindow::processEncryption()
+{
+	QString passwordToEncrypt{textForCryption.get()->toPlainText()}, keyForEncryption{selectionBox.get()->currentText()};
+	auto passwordToEncryptString = passwordToEncrypt.toStdString(), keyForEncryptionString = FolderStructure::keyDirectory+keyForEncryption.toStdString();
+	std::cout<<"Generated filename that contains encrypted password: "<<passwordToEncryptString<<std::endl;
+	auto strKeyFilename = keyForEncryption.toStdString();
+	Password<> pass{SaveFile::filenameStr};
+	cout << "Password filename: " << pass.passwordFilename() << endl;
+	Key<> k;
+	pass.setupDecryptedMessage(passwordToEncryptString);
+	k.setupFilename(strKeyFilename);
+
+	Encryption ec2{pass, k};
+	std::cout<<"Encrypted"<<std::endl;
+	ph.get()->populatePass();
+
+	switchControlEnabling();
+}	

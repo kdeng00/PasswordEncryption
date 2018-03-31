@@ -10,7 +10,6 @@ Encryption::Encryption(const string& message, const string& keyPath)
 	this->message = message;
 	setupMap(keyPath);
 	configurePasswordFileName();
-	//encryptMessage();
 }
 Encryption::Encryption(const Password<>& pass, const Key<>& ky)
 {

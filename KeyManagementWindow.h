@@ -9,6 +9,7 @@
 #include"ViewingWindow.h"
 
 class MainWindow;
+class PasswordManagementWindow;
 
 class KeyManagementWindow : public QDialog, public CommonWindow, public ViewingWindow
 {

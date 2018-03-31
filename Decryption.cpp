@@ -8,7 +8,6 @@
 Decryption::Decryption(const string& message)
 { 
 	this->message = message; 
-	//setupMap();
 	decryptMessage();
 }
 Decryption::Decryption(const Password<>& py, const Key<>& ky)
@@ -34,7 +33,6 @@ void Decryption::decryptMessage()
 	string messageToBeDecrypted{}, decryptedMessage{};
 
 	while(ioEvent >> messageToBeDecrypted);
-	//std::cout << messageToBeDecrypted << std::endl;
 
 	ioEvent.close();
 

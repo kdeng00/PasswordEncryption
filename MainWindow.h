@@ -10,11 +10,14 @@
 #include<QAction>
 #include<QDockWidget>
 #include<QWidget>
-#include"KeyManagementWindow.h"
-#include"PasswordManagementWindow.h"
 #include"CommonWindow.h"
+#include"KeyManagementWindow.h"
+#include"SaveFile.h"
+#include"PasswordManagementWindow.h"
 
 class KeyManagementWindow;
+class PasswordManagementWindow;
+class SaveFile;
 
 
 class MainWindow : public QMainWindow, public CommonWindow
@@ -25,6 +28,7 @@ public:
 	~MainWindow() = default;
 
 	void refreshComboBox();
+	void processEncryption();
 signals:
 private slots:
 	void encryptPassword();

@@ -7,17 +7,6 @@ GeneratePasswordFileName::GeneratePasswordFileName()
 {
 	generatedFileName();
 }
-/*
-void GeneratePasswordFileName::setupTime()
-{
-	time_t epochTime = time(0);
-	tm* currentTime = localtime(&epochTime);
-
-	year = 1900 + currentTime->tm_year;
-	month = 1 + currentTime->tm_mon;
-	dayOfMonth = currentTime->tm_mday;
-}
-*/
 void GeneratePasswordFileName::generatedFileName()
 {
 	filename.assign(dateString());
