@@ -18,14 +18,16 @@ public:
 
 	void setupContentOfComboBox();
 	void populatePass();
+	void updateElementView();
 private:
 	void setupWindow();
 	void setupLayouts();
 	void connections();
-
+	void determineAmountOfPasswords();
 
 	unique_ptr<QLineEdit> passwordField;
 	unique_ptr<vector<QTableWidgetItem*>> z;
+	int amountOfPasswords;
 private slots:
 	void exitApplication();
 	void testTableView();

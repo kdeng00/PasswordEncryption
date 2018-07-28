@@ -11,6 +11,7 @@
 
 PasswordManagementWindow::PasswordManagementWindow(QWidget* parent) : QDialog(parent)
 {
+	determineAmountOfPasswords();
 	setupWindow();
 	populatePass();
 }
@@ -21,7 +22,7 @@ void PasswordManagementWindow::setupWindow()
 	windowHeight=450;
 
 	elementView=unique_ptr<QTableWidget>{new QTableWidget};
-	elementView.get()->setRowCount(30);
+	elementView.get()->setRowCount(amountOfPasswords);
 	elementView.get()->setColumnCount(2);
 	tableHeader<<"password"<<"date";
 	elementView.get()->setHorizontalHeaderLabels(tableHeader);
@@ -154,4 +155,17 @@ void PasswordManagementWindow::testTableView()
 	QString de = QString{decrypted.c_str()};
 
 	crypticText.get()->setText(de);
+}
+void PasswordManagementWindow::determineAmountOfPasswords()
+{
+	Demo<> dm{};
+
+	auto passwordList = dm.retrievePasswordFilenames();
+	amountOfPasswords = passwordList.size();
+}
+void PasswordManagementWindow::updateElementView()
+{
+	determineAmountOfPasswords();
+	elementView.get()->setRowCount(amountOfPasswords);
+	elementView.get()->setColumnCount(2);
 }

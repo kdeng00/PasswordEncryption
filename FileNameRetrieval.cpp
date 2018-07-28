@@ -23,5 +23,8 @@ void FileNameRetrieval::retrievePasswordNames()
 
 	for (; beg!=end; ++beg)
 		if (beg->path().extension()==".txt")
-			passwordNames.push_back(beg->path().filename().string());
+		{
+			std::string passwordFilename = beg->path().filename().string();
+			passwordNames.push_back(passwordFilename);
+		}
 }

@@ -156,6 +156,7 @@ void MainWindow::processEncryption()
 
 	Encryption ec2{pass, k};
 	std::cout<<"Encrypted"<<std::endl;
+	ph.get()->updateElementView();
 	ph.get()->populatePass();
 
 	switchControlEnabling();
